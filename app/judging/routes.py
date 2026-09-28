@@ -170,6 +170,21 @@ def review(project_id: int):
                                    scores=scores, errors=result["errors"],
                                    mode="review", scoring_open=judging_open(event)), 400
         flash("Review saved." if intent != "submit" else "Review submitted.", "ok")
+        if intent != "submit":
+            # Save draft never advances: the judge stays in the queue view.
+            return redirect(url_for("judge.index", event=event["id"]))
+        # The next target is derived solely from the session judge and the
+        # existing queue query; client-supplied next-project hints are neither
+        # read nor trusted, and authorization stays in the review route.
+        queue = judging.judge_queue(user["id"], event["id"])
+        next_row = next(
+            (row for row in queue
+             if row["review_status"] != "complete" and row["project_id"] != project_id),
+            None,
+        )
+        if next_row is not None:
+            return redirect(url_for("judge.review", project_id=next_row["project_id"]))
+        flash("All assigned projects reviewed.", "ok")
         return redirect(url_for("judge.index", event=event["id"]))
 
     scores = judging.scores_for_review(review_row["id"])

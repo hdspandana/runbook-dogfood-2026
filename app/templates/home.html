@@ -36,6 +36,8 @@
 
   <div class="card">
     <h3>Tracks &amp; prizes</h3>
+    {% if not tracks %}<div class="empty">No tracks have been configured yet.</div>{% endif %}
+    {% if tracks or prizes %}
     <table>
       <tbody>
       {% for track in tracks %}
@@ -49,6 +51,7 @@
       {% endfor %}
       </tbody>
     </table>
+    {% endif %}
   </div>
 </div>
 
@@ -70,6 +73,8 @@
     </tbody>
   </table>
 </div>
+{% else %}
+<div class="empty">No public submissions yet.</div>
 {% endif %}
 {% endif %}
 {% endblock %}
