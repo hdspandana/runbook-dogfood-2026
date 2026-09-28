@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}{{ team.name }} · RUNBOOK{% endblock %}
+{% block content %}
+<div class="split">
+  <div class="card">
+    <h1 style="margin-bottom:.2rem">{{ team.name }}</h1>
+    <div class="small muted">{{ event.name }} · created {{ team.created_at | utc }}</div>
+
+    <h3 style="margin-top:1rem">Members</h3>
+    <table>
+      <thead><tr><th>Name</th><th>Email (organizer-visible only)</th><th></th></tr></thead>
+      <tbody>
+      {% for member in members %}
+        <tr><td>{{ member.display_name }}</td><td class="mono small">{{ member.email }}</td>
+            <td>{% if member.is_lead %}<span class="tag">lead</span>{% endif %}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:1rem">Project</h3>
+    {% if project %}
+      <p>{{ project.name }} <span class="tag {{ project.status }}">{{ project.status }}</span>
+        <a class="small" href="{{ url_for('projects.manage', project_id=project.id) }}">manage</a></p>
+    {% else %}
+      <p class="muted">No project yet.
+        <a href="{{ url_for('projects.new', event_id=event.id) }}">Create one</a>.
+        {% if timing.deadline_passed %}Note that the submission deadline has passed.{% endif %}</p>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>Invite teammates</h3>
+    <p class="small muted">Anyone signed in who opens this link joins the team. The token is random and can be
+      rotated if it leaks.</p>
+    <div class="code">{{ invite_url }}</div>
+    {% if is_lead %}
+      <form method="post" action="{{ url_for('teams.rotate_invite', team_id=team.id) }}" style="margin-top:.6rem">
+        <button class="btn secondary small" type="submit">Rotate invite link</button>
+      </form>
+    {% endif %}
+    <p class="small muted" style="margin-top:.6rem">A participant can belong to at most one team per event;
+      the join attempt is rejected with 409 if you already belong to a different team in this event.</p>
+  </div>
+</div>
+{% endblock %}

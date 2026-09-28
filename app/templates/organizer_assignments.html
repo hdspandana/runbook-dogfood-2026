@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Assignments · {{ event.name }}{% endblock %}
+{% block content %}
+<h1>Judge assignment</h1>
+<div class="small muted">{{ event.name }} · <a href="{{ url_for('organizer.judges', event_id=event.id) }}">Judges</a>
+  · <a href="{{ url_for('organizer.progress', event_id=event.id) }}">Progress</a>
+  · <a href="{{ url_for('runbook.dashboard', event=event.id) }}">Runbook</a></div>
+
+<div class="card">
+  <h3>Round-robin within track</h3>
+  <div class="code">for each track:
+    J = judges eligible for the track (ordered by user id)
+    P = submitted projects in the track (ordered by project id)
+    for i, project in enumerate(P):
+        for k in range(judges_per_project):
+            assign(J[(i + k) modulo len(J)] → project)</div>
+  <form method="post" style="margin-top:.6rem">
+    <div class="row">
+      <label for="judges_per_project" style="margin:0">Judges per project</label>
+      <input id="judges_per_project" name="judges_per_project" type="number" min="1" max="5" value="2" style="width:5rem">
+      <button class="btn" type="submit">Run assignment</button>
+      <span class="small muted">Existing assignments are kept; only missing pairs are created, so this is safe to re-run.</span>
+    </div>
+  </form>
+</div>
+
+<div class="grid two">
+  <div class="card">
+    <h3>Coverage</h3>
+    <div class="kpi">
+      <div><div class="v">{{ progress.assigned_projects }} / {{ progress.submitted_projects }}</div><div class="k">submitted projects assigned</div></div>
+      <div><div class="v">{{ progress.required_reviews }}</div><div class="k">required reviews</div></div>
+      <div><div class="v">{{ progress.complete_reviews }}</div><div class="k">complete</div></div>
+    </div>
+    {% if progress.unassigned_projects %}
+      <div class="flash error" style="margin-top:.7rem">
+        <strong>{{ progress.unassigned_projects|length }} submitted project(s) have no judge assignment:</strong>
+        <ul>{% for project in progress.unassigned_projects[:10] %}<li>{{ project.name }} (#{{ project.id }})</li>{% endfor %}</ul>
+      </div>
+    {% endif %}
+    {% if progress.invalid_track_assignments %}
+      <div class="flash error" style="margin-top:.6rem">{{ progress.invalid_track_assignments }} assignment(s) point at a track
+        that does not match the project's track.</div>
+    {% endif %}
+    {% if progress.duplicate_assignments %}
+      <div class="flash error" style="margin-top:.6rem">{{ progress.duplicate_assignments }} duplicate assignment(s) detected.</div>
+    {% else %}
+      <div class="small muted" style="margin-top:.6rem">Duplicate assignments: none. The schema makes them impossible —
+        <span class="mono">UNIQUE(project_id, judge_id)</span>.</div>
+    {% endif %}
+    {% if progress.judges_without_assignments %}
+      <div class="flash warn" style="margin-top:.6rem">
+        {{ progress.judges_without_assignments|length }} judge account(s) hold no assignments in this event:
+        {% for judge in progress.judges_without_assignments %}{{ judge.display_name }}{% if not loop.last %}, {% endif %}{% endfor %}.
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>Tracks</h3>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Track</th><th class="num">Complete</th><th class="num">Required</th><th class="num">Missing</th></tr></thead>
+      <tbody>
+      {% for track in progress.by_track %}
+        <tr><td>{{ track.track }}</td><td class="num">{{ track.complete }}</td>
+            <td class="num">{{ track.required }}</td><td class="num">{{ track.remaining }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Assignments ({{ rows|length }})</h3>
+  <p class="small muted">Organizers see all assignments and all review statuses. Judges see only their own.</p>
+  <div class="table-scroll"><table>
+    <thead><tr><th>Project</th><th>Track</th><th>Judge</th><th>Review</th><th class="num">Raw</th></tr></thead>
+    <tbody>
+    {% for row in rows %}
+      <tr>
+        <td>{{ row.project_name }} <span class="small muted">#{{ row.project_id }}</span></td>
+        <td><span class="tag track">{{ row.track_name or '—' }}</span></td>
+        <td>{{ row.judge_name }} <span class="mono small muted">{{ row.judge_email }}</span></td>
+        <td>{% if row.review_status == 'complete' %}<span class="status COMPLETE">COMPLETE</span>
+            {% else %}<span class="status ACTIVE">PENDING</span>{% endif %}</td>
+        <td class="num">{{ '%.2f'|format(row.raw_total) if row.raw_total is not none else '—' }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Create a participant account · RUNBOOK{% endblock %}
+{% block content %}
+<div class="narrow">
+  <h1>Create a participant account</h1>
+  <p class="muted small">Self-registration creates a <strong>participant</strong> account only. Judge accounts
+    are issued by an organizer through an invite link; organizer and admin accounts are provisioned by the
+    deployment.</p>
+  {% if error %}<div class="flash error">{{ error }}</div>{% endif %}
+  <form method="post" action="{{ url_for('auth.register') }}" class="card">
+    <div class="stack">
+      <div><label for="display_name">Display name</label><input id="display_name" type="text" name="display_name" value="{{ display_name or '' }}"></div>
+      <div><label for="email">Email</label><input id="email" type="email" name="email" value="{{ email or '' }}" required></div>
+      <div><label for="password">Password (min 8 characters)</label><input id="password" type="password" name="password" required></div>
+      <button class="btn" type="submit">Create account</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

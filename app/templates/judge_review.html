@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Review {{ project.name }} · RUNBOOK{% endblock %}
+{% block content %}
+<p class="small muted"><a href="{{ url_for('judge.index', event=event.id) }}">← Back to my queue</a></p>
+
+{% if errors %}
+  <div class="errors"><strong>Fix the following:</strong>
+    <ul>{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul></div>
+{% endif %}
+{% if not scoring_open %}
+  <div class="flash warn">The judging window is closed ({{ event.judging_starts_at | utc }} →
+    {{ event.judging_ends_at | utc }}). Scores are locked; this page is read-only and the server rejects writes.</div>
+{% endif %}
+
+<div class="split">
+  <div class="card">
+    <span class="tag track">{{ track.name if track else 'No track' }}</span>
+    {% if review.status == 'complete' %}<span class="status COMPLETE">REVIEWED</span>{% else %}<span class="status ACTIVE">NOT REVIEWED</span>{% endif %}
+    <h1 style="margin:.5rem 0 .2rem">{{ project.name }}</h1>
+    <div class="muted">{{ project.tagline }}</div>
+    <p style="margin-top:.8rem">{{ project.description }}</p>
+    <div class="table-scroll"><table>
+      <tbody>
+        <tr><td>Team</td><td>{{ team.name if team else '—' }}</td></tr>
+        <tr><td>Submitted at</td><td>{{ project.submitted_at | utc }}</td></tr>
+        {% if project.repo_url %}<tr><td>Repository</td><td><a href="{{ project.repo_url }}" target="_blank" rel="noreferrer noopener">Open repository →</a></td></tr>{% endif %}
+        {% if project.demo_url %}<tr><td>Demo</td><td><a href="{{ project.demo_url }}" target="_blank" rel="noreferrer noopener">Open demo →</a></td></tr>{% endif %}
+        {% if project.web_url %}<tr><td>Site</td><td><a href="{{ project.web_url }}" target="_blank" rel="noreferrer noopener">Open site →</a></td></tr>{% endif %}
+      </tbody>
+    </table></div>
+    <div class="sticky-note" style="margin-top:.8rem">
+      You are scoring as <strong>{{ current_user.display_name }}</strong> (derived from your session).
+      Your score is private to you and the organizers; other judges never see it.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="eyebrow">Scoring workstation</div><h2>Weighted rubric</h2>
+    <div class="small muted">Enter each criterion score within its displayed maximum. The weighted contribution and the raw total are
+      computed by the server, not by the browser.</div>
+
+    <form method="post" style="margin-top:.7rem">
+      <div class="table-scroll"><table>
+        <thead>
+          <tr><th>Criterion</th><th class="num">Score</th><th class="num">Weight</th><th class="num">Contribution</th></tr>
+        </thead>
+        <tbody>
+        {% for criterion in criteria %}
+          <tr>
+            <td><label for="score_{{ criterion.id }}">{{ criterion.name }}</label>
+              <div class="small muted">{{ criterion.description }}</div>
+              <div class="small muted">Maximum {{ criterion.max_score|int }} points</div></td>
+            <td class="num">
+              <input type="number" step="0.1" min="0" max="{{ criterion.max_score }}"
+                     id="score_{{ criterion.id }}" name="score_{{ criterion.id }}" style="width:6rem;text-align:right"
+                     value="{{ scores.get(criterion.id) if scores.get(criterion.id) is not none else '' }}"
+                     {% if not scoring_open %}disabled{% endif %}>
+            </td>
+            <td class="num">{{ criterion.weight_pct|round(0)|int }}%</td>
+            <td class="num">
+              {% if scores.get(criterion.id) is not none %}
+                {{ '%.2f'|format(scores.get(criterion.id) * criterion.weight_pct / 100.0) }}
+                <span class="small muted">/ {{ '%.0f'|format(criterion.max_score * criterion.weight_pct / 100.0) }}</span>
+              {% else %}—{% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="3">Raw total (Σ score × weight ÷ 100)</th>
+            <th class="num">
+              {% if review.raw_total is not none %}{{ '%.2f'|format(review.raw_total) }}{% else %}—{% endif %}
+            </th>
+          </tr>
+        </tfoot>
+      </table></div>
+
+      <div style="margin-top:.7rem">
+        <label for="comment">Comment (visible to organizers only)</label>
+        <textarea id="comment" name="comment" {% if not scoring_open %}disabled{% endif %}>{{ review.comment or '' }}</textarea>
+      </div>
+
+      <p class="small muted">You can edit this review until judging closes. The server calculates the final weighted total.</p>
+      <div class="row" style="margin-top:.6rem">
+        {% if review.status != 'complete' %}<button class="btn secondary" type="submit" name="intent" value="save" {% if not scoring_open %}disabled{% endif %}>Save draft</button>{% endif %}
+        <button class="btn" type="submit" name="intent" value="submit" {% if not scoring_open %}disabled{% endif %}>{{ 'Save changes' if review.status == 'complete' else 'Submit review' }}</button>
+        {% if review.status == 'complete' %}
+          <a class="btn ghost" href="{{ url_for('judge.index', event=event.id) }}">Next project →</a>
+        {% endif %}
+      </div>
+      <div class="small muted" style="margin-top:.4rem">
+        A saved draft keeps the review <em>pending</em> and is excluded from normalization — pending is not zero.
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

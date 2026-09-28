@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Tracks &amp; prizes · {{ event.name }}{% endblock %}
+{% block content %}
+<h1>Tracks &amp; prizes</h1>
+<div class="small muted">{{ event.name }} · <a href="{{ url_for('runbook.dashboard', event=event.id) }}">Runbook</a>
+  · <a href="{{ url_for('organizer.rubric', event_id=event.id) }}">Rubric</a>
+  · <a href="{{ url_for('organizer.judges', event_id=event.id) }}">Judges</a></div>
+
+<div class="grid two">
+  <div class="card">
+    <h3>Tracks ({{ tracks|length }})</h3>
+    <table>
+      <thead><tr><th>Track</th><th>Slug</th><th class="num">Projects</th><th></th></tr></thead>
+      <tbody>
+      {% for track in tracks %}
+        <tr>
+          <td>{{ track.name }}<div class="small muted">{{ track.description }}</div></td>
+          <td class="mono small">{{ track.slug }}</td>
+          <td class="num">{{ track_counts.get(track.id, 0) }}</td>
+          <td>
+            <form class="inline" method="post" action="{{ url_for('organizer.track_delete', event_id=event.id, track_id=track.id) }}">
+              <button class="btn small danger" type="submit">Remove</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <form method="post" style="margin-top:.8rem">
+      <input type="hidden" name="action" value="track">
+      <div class="stack">
+        <div><label for="name">New track</label><input id="name" name="name" placeholder="e.g. Developer Tooling"></div>
+        <div><label for="description">Description</label><input id="description" name="description"></div>
+        <button class="btn" type="submit">Add track</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card">
+    <h3>Prizes ({{ prizes|length }})</h3>
+    <table>
+      <thead><tr><th>Prize</th><th>Scope</th><th>Rank</th></tr></thead>
+      <tbody>
+      {% for prize in prizes %}
+        <tr><td>{{ prize.name }}<div class="small muted">{{ prize.description }}</div></td>
+            <td>{% if prize.track_name %}<span class="tag track">{{ prize.track_name }}</span>{% else %}<span class="tag">event-wide</span>{% endif %}</td>
+            <td>{{ prize.rank or '—' }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <form method="post" style="margin-top:.8rem">
+      <input type="hidden" name="action" value="prize">
+      <div class="stack">
+        <div><label for="prize_name">New prize</label><input id="prize_name" name="prize_name" placeholder="e.g. Best Use of Open Data"></div>
+        <div><label for="prize_description">Description</label><input id="prize_description" name="prize_description"></div>
+        <div class="grid two">
+          <div><label for="prize_track">Track scope</label>
+            <select id="prize_track" name="prize_track">
+              <option value="">Event-wide</option>
+              {% for track in tracks %}<option value="{{ track.id }}">{{ track.name }}</option>{% endfor %}
+            </select></div>
+          <div><label for="prize_rank">Rank (optional)</label><input id="prize_rank" name="prize_rank" type="number" min="1"></div>
+        </div>
+        <button class="btn" type="submit">Add prize</button>
+      </div>
+    </form>
+    <div class="small muted" style="margin-top:.6rem">Prizes are intentionally minimal: a name, a description and
+      an optional track/rank. Prizes appear on the public event page; they do not affect scoring.</div>
+  </div>
+</div>
+{% endblock %}

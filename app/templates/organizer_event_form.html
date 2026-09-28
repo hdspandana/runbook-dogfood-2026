@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit event' if event else 'New event' }} · RUNBOOK{% endblock %}
+{% block content %}
+<div class="narrow">
+  <h1>{{ 'Edit event' if event else 'Create an event' }}</h1>
+  <p class="small muted">All datetimes are entered and stored in <strong>UTC</strong> (the format a
+    <span class="mono">datetime-local</span> input produces is interpreted as UTC). Every downstream decision —
+    deadline enforcement, judging window, normalization freshness — is evaluated against server-side UTC.</p>
+
+  {% if errors %}
+    <div class="errors"><strong>Fix the following:</strong><ul>
+      {% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul></div>
+  {% endif %}
+
+  <form method="post" class="card">
+    <div class="stack">
+      <div><label for="name">Name</label><input id="name" name="name" required value="{{ values.name or '' }}"></div>
+      <div><label for="slug">Slug</label><input id="slug" name="slug" required value="{{ values.slug or '' }}"></div>
+      <div><label for="tagline">Tagline</label><input id="tagline" name="tagline" value="{{ values.tagline or '' }}"></div>
+      <div><label for="location">Location</label><input id="location" name="location" value="{{ values.location or '' }}"></div>
+      <div class="grid two">
+        <div><label for="starts_at">Starts (UTC)</label>
+          <input id="starts_at" name="starts_at" type="datetime-local" required value="{{ (values.starts_at or '')[:16] }}"></div>
+        <div><label for="submission_deadline">Submission deadline (UTC)</label>
+          <input id="submission_deadline" name="submission_deadline" type="datetime-local" required value="{{ (values.submission_deadline or '')[:16] }}"></div>
+        <div><label for="judging_starts_at">Judging starts (UTC)</label>
+          <input id="judging_starts_at" name="judging_starts_at" type="datetime-local" required value="{{ (values.judging_starts_at or '')[:16] }}"></div>
+        <div><label for="judging_ends_at">Judging ends (UTC)</label>
+          <input id="judging_ends_at" name="judging_ends_at" type="datetime-local" required value="{{ (values.judging_ends_at or '')[:16] }}"></div>
+      </div>
+      {% if not event %}
+        <fieldset>
+          <legend class="small muted">Initial setup</legend>
+          <div><label for="tracks">Tracks (one per line)</label><textarea id="tracks" name="tracks"></textarea></div>
+          <div style="margin-top:.5rem"><label for="prizes">Prizes (one per line)</label><textarea id="prizes" name="prizes"></textarea></div>
+          <p class="small muted" style="margin-top:.4rem">A standard four-criterion rubric (Innovation 25%,
+            Execution 30%, Impact 25%, Presentation 20%) is created with the event and can be edited afterwards.</p>
+        </fieldset>
+      {% endif %}
+      <div class="row">
+        <button class="btn" type="submit">{{ 'Save event' if event else 'Create event' }}</button>
+        {% if event %}
+          <a class="btn secondary" href="{{ url_for('organizer.tracks', event_id=event.id) }}">Tracks &amp; prizes</a>
+          <a class="btn secondary" href="{{ url_for('organizer.rubric', event_id=event.id) }}">Rubric</a>
+          <a class="btn secondary" href="{{ url_for('runbook.dashboard', event=event.id) }}">Runbook</a>
+        {% endif %}
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

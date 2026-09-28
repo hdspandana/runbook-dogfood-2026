@@ -1,0 +1,23 @@
+# Offline after `docker compose build`: one Flask/SQLite container, no
+# database service, no Redis, no external APIs, no build-time assets.
+services:
+  runbook:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      RUNBOOK_DATA_DIR: /data
+      RUNBOOK_SEED_ON_BOOT: "1"
+      RUNBOOK_DEMO_SESSIONS: "on"
+      RUNBOOK_COOKIE_SECURE: "0" # local HTTP; set 1 behind HTTPS in deployment
+    volumes:
+      - runbook_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/health', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  runbook_data:

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Submissions closed · RUNBOOK{% endblock %}
+{% block content %}
+<div class="narrow">
+  <div class="card">
+    <span class="status BLOCKED">403 · SUBMISSIONS CLOSED</span>
+    <h1 style="margin-top:.6rem">The submission window for {{ event.name }} has closed</h1>
+    <p>{{ payload.detail }}</p>
+    <table><tbody>
+      <tr><td>Deadline (UTC)</td><td class="mono">{{ payload.deadline }}</td></tr>
+      <tr><td>Server time (UTC)</td><td class="mono">{{ payload.server_time_utc }}</td></tr>
+    </tbody></table>
+    <p class="small muted" style="margin-top:.7rem">This decision is made by the backend against server-side UTC
+      time on every participant mutation — project creation, editing and submission. Hiding or disabling the
+      button in the browser changes nothing.</p>
+    <a class="btn secondary" href="{{ url_for('gallery.home') }}">Back to the event</a>
+  </div>
+</div>
+{% endblock %}

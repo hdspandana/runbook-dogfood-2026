@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Rubric · {{ event.name }}{% endblock %}
+{% block content %}
+<h1>Judging rubric</h1>
+<div class="small muted">{{ event.name }} · <a href="{{ url_for('runbook.dashboard', event=event.id) }}">Runbook</a>
+  · <a href="{{ url_for('organizer.assignments', event_id=event.id) }}">Assignments</a></div>
+
+<div class="card">
+  <div class="row between">
+    <div>
+      <strong>{{ message }}</strong>
+      <div class="small muted">Maximum raw total: {{ '%.2f'|format(max_total) }} ·
+        rubric fingerprint <span class="mono">{{ fingerprint[:16] }}…</span></div>
+    </div>
+    <span class="status {{ 'COMPLETE' if valid else 'BLOCKED' }}">{{ 'VALID' if valid else 'INVALID' }}</span>
+  </div>
+  <div class="small muted" style="margin-top:.4rem">
+    Editing the rubric changes its fingerprint, which marks any persisted normalized result as STALE —
+    results computed against a different rubric are not comparable with results computed against this one.
+  </div>
+</div>
+
+<form method="post" class="card">
+  <div class="table-scroll"><table>
+    <thead>
+      <tr><th>Criterion</th><th class="num">Weight %</th><th class="num">Max score</th><th></th></tr>
+    </thead>
+    <tbody>
+    {% for criterion in criteria %}
+      <tr>
+        <td>
+          <label class="sr-only" for="criterion_{{ criterion.id }}_name">Criterion name</label>
+          <input type="text" id="criterion_{{ criterion.id }}_name" name="criterion_{{ criterion.id }}_name" value="{{ criterion.name }}">
+          <label class="sr-only" for="criterion_{{ criterion.id }}_description">Criterion description</label>
+          <input type="text" id="criterion_{{ criterion.id }}_description" name="criterion_{{ criterion.id }}_description" value="{{ criterion.description }}"
+                 placeholder="What does this criterion measure?" style="margin-top:.3rem">
+        </td>
+        <td class="num"><label class="sr-only" for="criterion_{{ criterion.id }}_weight">Weight for {{ criterion.name }}</label><input type="number" step="0.5" min="0" max="100" style="width:5.5rem;text-align:right"
+              id="criterion_{{ criterion.id }}_weight" name="criterion_{{ criterion.id }}_weight" value="{{ criterion.weight_pct }}"></td>
+        <td class="num"><label class="sr-only" for="criterion_{{ criterion.id }}_max_score">Maximum for {{ criterion.name }}</label><input type="number" step="0.5" min="1" style="width:5.5rem;text-align:right"
+              id="criterion_{{ criterion.id }}_max_score" name="criterion_{{ criterion.id }}_max_score" value="{{ criterion.max_score }}"></td>
+        <td><label class="small muted"><input type="checkbox" name="criterion_{{ criterion.id }}_delete" value="1"> delete</label></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <th>Total</th>
+        <th class="num">{{ criteria|sum(attribute='weight_pct')|round(1) }}%</th>
+        <th colspan="2" class="small muted">must equal 100%</th>
+      </tr>
+    </tfoot>
+  </table></div>
+
+  <fieldset style="margin-top:.8rem">
+    <legend class="small muted">Add a criterion</legend>
+    <div class="grid three">
+      <div><label for="new_name">Name</label><input id="new_name" name="new_name"></div>
+      <div><label for="new_weight">Weight %</label><input id="new_weight" name="new_weight" type="number" step="0.5" min="0"></div>
+      <div><label for="new_max_score">Max score</label><input id="new_max_score" name="new_max_score" type="number" step="0.5" value="10"></div>
+    </div>
+    <div style="margin-top:.5rem"><label for="new_description">Description</label><input id="new_description" name="new_description"></div>
+  </fieldset>
+
+  <div class="row" style="margin-top:.7rem">
+    <button class="btn" type="submit">Save rubric</button>
+    <a class="btn secondary" href="{{ url_for('api.rubric', event_id=event.id) }}">Rubric as JSON</a>
+  </div>
+</form>
+
+<div class="card">
+  <h3>How the raw total is computed</h3>
+  <div class="code">raw_total = Σ (criterion_score × criterion_weight ÷ 100)
+
+max raw total = Σ (criterion_max_score × criterion_weight ÷ 100) = {{ '%.2f'|format(max_total) }}
+z_score       = (raw_total − judge_mean) ÷ judge_population_sigma</div>
+  <div class="small muted" style="margin-top:.5rem">Cross-judge normalization uses each judge's own mean and
+    population standard deviation over their completed reviews. Full detail, including every edge case, is in
+    JUDGING.md and is enforced by tests/test_normalization_maths.py.</div>
+</div>
+{% endblock %}

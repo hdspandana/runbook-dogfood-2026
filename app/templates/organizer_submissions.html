@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Submissions · {{ event.name }}{% endblock %}
+{% block content %}
+<h1>Submissions</h1>
+<div class="small muted">{{ event.name }} · {{ counts.submitted }} submitted · {{ counts.drafts }} draft ·
+  {{ counts.teams }} teams · {{ counts.projects }} projects</div>
+
+<div class="card tight">
+  <div class="row between">
+    <div class="small">
+      {% if timing.deadline_passed %}
+        Submission window closed {{ timing.deadline_countdown }} ago at {{ timing.deadline_display }}.
+      {% else %}
+        Window closes in {{ timing.deadline_countdown }} ({{ timing.deadline_display }}).
+      {% endif %}
+    </div>
+    <a class="btn secondary small" href="{{ url_for('exports.export_csv', event_id=event.id) }}">Download judging CSV</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-scroll"><table>
+    <thead><tr><th>#</th><th>Project</th><th>Team</th><th>Track</th><th>Status</th><th class="num">Assignments</th>
+      <th class="num">Reviews done</th><th>Submitted</th></tr></thead>
+    <tbody>
+    {% for row in rows %}
+      <tr>
+        <td class="small muted">{{ row.id }}</td>
+        <td>{{ row.name }}<div class="small muted">{{ row.tagline }}</div></td>
+        <td class="small">{{ row.team_name }}</td>
+        <td><span class="tag track">{{ row.track_name or '—' }}</span></td>
+        <td><span class="tag {{ row.status }}">{{ row.status }}</span></td>
+        <td class="num">{{ row.assignments }}</td>
+        <td class="num">{{ row.complete_reviews }}</td>
+        <td class="small">{{ row.submitted_at | utc if row.submitted_at else '—' }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+</div>
+{% endblock %}

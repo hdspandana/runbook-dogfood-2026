@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title %}Runbook · {{ snapshot.event.name if snapshot.event else 'no event' }}{% endblock %}
+{% block content %}
+
+<div class="page-header row between">
+  <div><div class="eyebrow">Event operations</div><h1>Runbook</h1></div>
+  <form method="get" action="{{ url_for('runbook.dashboard') }}" class="row">
+    <label for="event" class="small muted" style="margin:0">Event</label>
+    <select id="event" name="event" onchange="this.form.submit()" style="width:auto">
+      {% for event in events %}
+        <option value="{{ event.id }}" {% if selected_event_id == event.id %}selected{% endif %}>{{ event.name }}</option>
+      {% endfor %}
+    </select>
+    <noscript><button class="btn small secondary" type="submit">Switch</button></noscript>
+  </form>
+</div>
+
+<div class="banner action-hero">
+  {% if snapshot.event %}
+    <div class="row between">
+      <div>
+        <h2>{{ snapshot.event.name }}</h2>
+        <div class="small" style="color:#9fb0c3">
+          {{ snapshot.event.phase }} · submission deadline {{ snapshot.event.deadline }} · judging closes {{ snapshot.event.judging_ends_at }}
+        </div>
+      </div>
+      <div class="small" style="color:#9fb0c3">computed {{ snapshot.generated_at[11:19] }} UTC</div>
+    </div>
+    <div style="margin-top:.7rem">
+      <div class="small" style="color:#9fb0c3;text-transform:uppercase;letter-spacing:.08em">What should I do now?</div>
+      <div class="next">{{ snapshot.next_action.headline }}</div>
+      {% if snapshot.next_action.step == 'judging' and snapshot.progress %}
+        <div class="small" style="color:#fff;margin-top:.15rem">{{ snapshot.progress.pending_reviews }} required review(s) remaining.</div>
+      {% endif %}
+      <div class="small" style="color:#c9d5e2;margin-top:.15rem">{{ snapshot.next_action.reason }}</div>
+      {% if snapshot.next_action.action_url %}
+        <div style="margin-top:.5rem"><a class="btn" href="{{ snapshot.next_action.action_url }}">Open {{ snapshot.next_action.step | replace("_", " ") }} →</a></div>
+      {% endif %}
+    </div>
+  {% else %}
+    <h2>No event configured</h2>
+    <div class="next">{{ snapshot.next_action.headline }}</div>
+  {% endif %}
+</div>
+
+{% if snapshot.event %}
+<div class="metric-grid" aria-label="Event at a glance">
+  {% set p = snapshot.progress %}
+  <div class="metric"><span>Submissions</span><strong>{{ p.submitted_projects }}</strong><small>submitted projects</small></div>
+  <div class="metric"><span>Judging</span><strong>{{ p.complete_reviews }} / {{ p.required_reviews }}</strong><small>{{ p.pending_reviews }} reviews remaining</small></div>
+  <div class="metric"><span>Assignment gaps</span><strong>{{ p.unassigned_projects|length }}</strong><small>unassigned projects</small></div>
+  <div class="metric"><span>Normalization</span><strong>{{ snapshot.normalization.state | replace('_', ' ') | upper }}</strong><small>persisted snapshot</small></div>
+</div>
+{% endif %}
+<div class="overview" style="margin-bottom:1rem">
+  <span class="chip">Total <b>{{ snapshot.summary.total }}</b></span>
+  <span class="chip">Complete <b>{{ snapshot.summary.complete }}</b></span>
+  <span class="chip">Active <b>{{ snapshot.summary.active }}</b></span>
+  <span class="chip">Upcoming <b>{{ snapshot.summary.upcoming }}</b></span>
+  <span class="chip">Blocked <b>{{ snapshot.summary.blocked }}</b></span>
+  <span class="chip">Stale <b>{{ snapshot.summary.stale }}</b></span>
+</div>
+
+<div class="grid two">
+  <div>
+    {% for card in snapshot.steps %}
+      <div class="card rb-card {{ card.status }} {% if snapshot.next_action.step == card.step %}is-next{% endif %}">
+        <div class="rb-head">
+          <span class="rb-step-no">{{ loop.index }}</span>
+          <h3 style="margin:0">{{ card.title }}</h3>
+          <span class="status {{ card.status }}"><span aria-hidden="true">{{ {"COMPLETE":"✓", "ACTIVE":"→", "UPCOMING":"○", "BLOCKED":"!", "STALE":"↻"}[card.status] }}</span> {{ card.status }}</span>
+          {% if card.observation %}<span class="tag" title="This stage is an observation of what the system did, not an action for the organizer">observation</span>{% endif %}
+        </div>
+        <div class="rb-metric" style="margin-top:.4rem">{{ card.metric }}</div>
+        <div class="small muted">{{ card.reason }}</div>
+        <div class="rb-next {% if snapshot.next_action.step == card.step %}priority{% endif %}">
+          <strong>Next action</strong>
+          {{ card.next_action }}
+          {% if card.action_url %}<div style="margin-top:.35rem"><a class="btn small secondary" href="{{ card.action_url }}">Open {{ card.title }} →</a></div>{% endif %}
+        </div>
+        {% if card.evidence %}
+          <details class="evidence">
+            <summary>Why? ({{ card.evidence|length }})</summary>
+            <ul>{% for item in card.evidence %}<li>{{ item }}</li>{% endfor %}</ul>
+          </details>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div>
+    <div class="card">
+      <h3>Judging progress</h3>
+      {% set p = snapshot.progress %}
+      <div class="kpi">
+        <div><div class="v">{{ p.complete_reviews }} / {{ p.required_reviews }}</div><div class="k">required reviews</div></div>
+        <div><div class="v">{{ p.pending_reviews }}</div><div class="k">remaining</div></div>
+        <div><div class="v">{{ p.percent }}%</div><div class="k">complete</div></div>
+      </div>
+      <div class="bar" style="margin:.6rem 0"><span style="width: {{ p.percent }}%"></span></div>
+      <div class="table-scroll"><table>
+        <thead><tr><th>Track</th><th class="num">Complete</th><th class="num">Required</th><th class="num">Missing</th></tr></thead>
+        <tbody>
+        {% for track in p.by_track %}
+          <tr>
+            <td>{{ track.track }}</td>
+            <td class="num">{{ track.complete }}</td>
+            <td class="num">{{ track.required }}</td>
+            <td class="num">{{ track.remaining }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table></div>
+      <div class="small muted" style="margin-top:.5rem">
+        Completion policy: every submitted project must hold at least one assignment and every assignment
+        must have a completed review. “All currently assigned reviews are done” is not sufficient.
+        {% if p.unassigned_projects %}
+          <br><strong>{{ p.unassigned_projects|length }} submitted project(s) have no judge assignment.</strong>
+        {% endif %}
+        {% if p.judges_without_assignments %}
+          <br>{{ p.judges_without_assignments|length }} judge account(s) hold no assignments in this event.
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Normalization freshness</h3>
+      {% set n = snapshot.normalization %}
+      <div class="row"><span class="status {{ 'STALE' if n.state == 'stale' else ('COMPLETE' if n.state == 'current' else 'UPCOMING') }}">{{ n.state|upper }}</span>
+        <span class="small muted">method: per-judge z-score, population σ</span></div>
+      <div class="table-scroll"><table style="margin-top:.5rem">
+        <tbody>
+          <tr><td>Completed reviews now</td><td class="num">{{ n.current_review_count }}</td></tr>
+          <tr><td>Reviews in last persisted snapshot</td><td class="num">{{ n.stored_review_count }}</td></tr>
+          <tr><td>Pending (excluded)</td><td class="num">{{ n.current_pending_count }}</td></tr>
+          {% if n.stored_at %}<tr><td>Last run</td><td class="num small">{{ n.stored_at | utc }}</td></tr>{% endif %}
+          {% if n.rubric_changed %}<tr><td>Rubric changed since</td><td class="num">yes</td></tr>{% endif %}
+        </tbody>
+      </table></div>
+      {% if snapshot.publication.state == 'stale' %}<p class="flash warn">A previous results publication is STALE. Its timestamp is historical, not proof of a current ranking.</p>{% endif %}
+      <div class="small muted" style="margin-top:.5rem">
+        The persisted snapshot is STALE when its review, submitted-project, rubric, or result metadata inputs
+        no longer match. It is not necessarily published. Runbook compares fingerprints, not timestamps.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Why this is not a checklist</h3>
+      <div class="small muted">
+        No card on this page is stored. Every status is recomputed from the event database on each
+        request: projects, assignments, reviews, rubric versions and normalization snapshots. Nothing
+        here authorizes anything either — CSV export stays open to organizers in every Runbook state,
+        including BLOCKED and STALE.
+      </div>
+      <div class="row" style="margin-top:.6rem">
+        <a class="btn secondary small" href="{{ url_for('exports.export_csv', event_id=selected_event_id) if selected_event_id else '#' }}">Download CSV now</a>
+        <a class="btn secondary small" href="{{ url_for('runbook.api_runbook', event_id=selected_event_id) if selected_event_id else '#' }}">Runbook as JSON</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{{ event.name }} · RUNBOOK{% endblock %}
+{% block content %}
+<div class="banner">
+  <h2>{{ event.name }}</h2>
+  <div class="small" style="color:#9fb0c3">{{ event.tagline }} · {{ event.location }}</div>
+  <div class="row" style="margin-top:.5rem">
+    <span class="chip">{{ phase }}</span>
+    <span class="chip">Submissions close {{ event.submission_deadline | utc }}</span>
+    {% if timing.deadline_passed %}
+      <span class="chip">Closed {{ timing.deadline_countdown }} ago</span>
+    {% else %}
+      <span class="chip">Closes in {{ timing.deadline_countdown }}</span>
+    {% endif %}
+  </div>
+</div>
+
+<div class="grid two">
+  <div class="card">
+    <h3>Tracks</h3>
+    <table><tbody>
+    {% for track in tracks %}
+      <tr>
+        <td>{{ track.name }}<div class="small muted">{{ track.description }}</div></td>
+        <td class="num"><a class="small" href="{{ url_for('gallery.gallery', event=event.id, track=track.id) }}">{{ judged_projects|selectattr('track_id', 'equalto', track.id)|list|length }} shown</a></td>
+      </tr>
+    {% endfor %}
+    </tbody></table>
+  </div>
+  <div class="card">
+    <h3>Prizes</h3>
+    <table><tbody>
+    {% for prize in prizes %}
+      <tr><td><strong>{{ prize.name }}</strong>{% if prize.track_name %} <span class="tag track">{{ prize.track_name }}</span>{% else %} <span class="tag">event-wide</span>{% endif %}
+        <div class="small muted">{{ prize.description }}</div></td></tr>
+    {% endfor %}
+    </tbody></table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="row between">
+    <h3 style="margin:0">Submissions</h3>
+    <a class="btn secondary small" href="{{ url_for('gallery.gallery', event=event.id) }}">Open gallery</a>
+  </div>
+  <p class="small muted">{{ counts.submitted }} submitted · {{ counts.drafts }} draft (not public) · {{ counts.teams }} teams</p>
+</div>
+{% endblock %}

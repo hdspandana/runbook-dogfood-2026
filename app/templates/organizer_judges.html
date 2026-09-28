@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Judges · {{ event.name }}{% endblock %}
+{% block content %}
+<h1>Judges</h1>
+<div class="small muted">{{ event.name }} · <a href="{{ url_for('organizer.assignments', event_id=event.id) }}">Assignments</a>
+  · <a href="{{ url_for('runbook.dashboard', event=event.id) }}">Runbook</a></div>
+
+<div class="card">
+  <h3>Invite a judge</h3>
+  <p class="small muted">No email infrastructure: the invite link <em>is</em> the invitation. It contains a
+    192-bit random token; the invited judge opens it, sets a password, and lands in their review queue.
+    An optional track scope limits the judge to that track.</p>
+  <form method="post">
+    <div class="grid three">
+      <div><label for="email">Email</label><input id="email" name="email" type="email" required></div>
+      <div><label for="display_name">Display name (optional)</label><input id="display_name" name="display_name"></div>
+      <div><label for="track_id">Track scope</label>
+        <select id="track_id" name="track_id">
+          <option value="">All tracks</option>
+          {% for track in tracks %}<option value="{{ track.id }}">{{ track.name }}</option>{% endfor %}
+        </select></div>
+    </div>
+    <button class="btn" type="submit" style="margin-top:.6rem">Create invite link</button>
+  </form>
+</div>
+
+<div class="grid two">
+  <div class="card">
+    <h3>Invitations ({{ invites|length }})</h3>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Email</th><th>Scope</th><th>Status</th><th>Link</th></tr></thead>
+      <tbody>
+      {% for invite in invites %}
+        <tr>
+          <td class="mono small">{{ invite.email }}</td>
+          <td class="small">{{ invite.track_name or 'all tracks' }}</td>
+          <td>{% if invite.accepted_by %}<span class="status COMPLETE">ACCEPTED</span>{% else %}<span class="status ACTIVE">PENDING</span>{% endif %}</td>
+          <td class="mono small"><a href="{{ url_for('organizer.judge_invite', token=invite.token) }}">/judge-invite/{{ invite.token[:10] }}…</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>Judge accounts ({{ judges|length }})</h3>
+    <p class="small muted">Assignment count is per event. A judge with zero assignments is reported by the
+      Runbook rather than silently ignored.</p>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Judge</th><th>Email</th><th class="num">Assignments</th></tr></thead>
+      <tbody>
+      {% for judge in judges %}
+        <tr>
+          <td>{{ judge.display_name }}</td>
+          <td class="mono small">{{ judge.email }}</td>
+          <td class="num">
+            {% if judge.assignments %}{{ judge.assignments }}
+            {% else %}<span class="status ACTIVE">0 · idle</span>{% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table></div>
+  </div>
+</div>
+{% endblock %}

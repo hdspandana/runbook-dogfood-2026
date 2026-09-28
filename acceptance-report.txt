@@ -1,0 +1,70 @@
+RUNBOOK — acceptance & verification report (2026-09-28, pre-submission freeze)
+Every result below was produced by actually executing the listed command in this
+environment. Nothing is claimed without execution.
+
+Final pre-submission round
+- Fixed a real bug introduced while surfacing run linkage: the results JSON endpoint
+  used dict.get on a sqlite3.Row (AttributeError); now reads latest_run["id"] safely.
+  Regression added: test_results_endpoints_expose_run_linkage (JSON latest_run_id ==
+  published_run_id after publish; the results page renders "#<run id>").
+- Results page and /api .../results now state WHICH normalization run produced the
+  stored snapshot and which run the publication certified ("Snapshot run #N",
+  "Publication certified run #N"), so freshness never has to be inferred from clocks.
+- Removed the last documentation contradiction: PHASES.md no longer claims a recorded
+  publication timestamp can remain current after later edits; it now describes the
+  run-linked STALE/republish semantics.
+- .gitignore now excludes .runtime/ (runtime databases/logs).
+- python -m compileall -q app tests → exit 0.
+- pytest -q → 51 passed in 123.59s.
+- Fresh seeded portal (.runtime/presub): python3 scripts/smoke.py → all smoke checks
+  passed; python3 run.py .dogfood.toml → 7/7 PASS; python3 scripts/demo_flow.py →
+  completed (Next Action "Continue judging" while coverage incomplete, normalization
+  stale, CSV 200 rows=136 with stale label).
+- Headless Chromium audit, 8 routes × 360/390/768/1024/1440 px → "browser failures 0".
+- Docker: `docker: command not found` (re-probed) → NOT VERIFIED.
+
+Verified behavior carried from earlier rounds (all re-exercised by the suite)
+- Authentication/session: PBKDF2 hashing, opaque server-side sessions with expiry,
+  HttpOnly + SameSite cookie flags, env-provided secret, open-redirect guard
+  (regressions: test_session_cookie_flags_and_open_redirect_guard).
+- Roles: visitor/participant/judge/organizer/admin; admin is an organizer superset
+  without judge/participant capabilities; IDOR/param-tampering/cross-track/cross-event
+  negative paths covered by the security matrix.
+- Teams: 192-bit invite tokens; invalid token 404; second same-event team 409;
+  non-participant join 403; one team per participant per event
+  (regression: test_team_join_boundaries).
+- Deadlines: current_utc >= submission_deadline rejects create/edit/submit and team
+  writes server-side; judging window locks judge writes.
+- Judging: deterministic round-robin within track; weighted rubric with server-side
+  totals; judge isolation (own review only); peer scores denied; participant denied.
+- Normalization: weighted raw → per-judge mean/population σ → z (σ=0→z=0; fewer than
+  the minimum completed reviews → neutral); pending never zero; zero-review projects
+  provisional/unranked; fingerprint staleness on score/rubric/roster/metadata changes.
+- Publication freshness: publication certifies a specific normalization run; later
+  input changes or a later run mark it STALE until deliberate republication; legacy
+  timestamps unverified; both publish routes 409 until coverage complete + current.
+- CSV: organizer/admin only, available in every Runbook state; pending/complete/
+  unassigned semantics; not_run/current/stale labeling; text/csv UTF-8.
+- Runbook: eight derived cards, deterministic dependency-ordered next action, stale
+  visibility, operational insights (unassigned projects, idle judges), no stored or
+  hardcoded states.
+- UX/responsive/a11y: Runbook hero + metric strip + workflow ladder, judge
+  workstation, freshness panels, gallery/home/forms, skip link, aria-current,
+  labelled controls, glyphs plus labels, visible focus, reduced-motion support.
+
+Docker
+- NOT VERIFIED — the docker binary does not exist in this environment; docker compose
+  up --build was NOT executed. Dockerfile/compose mirror the verified Python boot path
+  (server.py, seed-on-boot, /data volume, healthcheck).
+
+Remaining risks
+- Container boot, volume persistence and restart idempotence unverified (no Docker here).
+- No browser CSRF token, no rate limiting, development WSGI server; demo sessions,
+  seeded credentials and the dev secret must be disabled/rotated for real deployment
+  (README "Self-hosting and limitations").
+- Visual/accessibility checks are headless Chromium plus code audit, not physical
+  devices or screen readers. Publication is an organizer action, not a public leaderboard.
+
+Final readiness: READY FOR SUBMISSION
+(the full DOGFOOD demo path is verified end to end on the Python boot path; Docker is
+honestly marked NOT VERIFIED as stated above).

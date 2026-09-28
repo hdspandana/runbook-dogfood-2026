@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{{ project.name }} · RUNBOOK{% endblock %}
+{% block content %}
+<p class="small muted"><a href="{{ url_for('gallery.gallery', event=project.event_id) }}">← Back to gallery</a></p>
+<div class="split">
+  <div class="card">
+    <span class="tag track">{{ project.track_name or 'No track' }}</span>
+    <h1 style="margin:.5rem 0 .2rem">{{ project.name }}</h1>
+    <div class="muted">{{ project.tagline }}</div>
+    <hr style="border:none;border-top:1px solid var(--line);margin:1rem 0">
+    <p>{{ project.description }}</p>
+    <table>
+      <tbody>
+        <tr><td>Team</td><td>{{ project.team_name }}</td></tr>
+        <tr><td>Event</td><td>{{ project.event_name }}</td></tr>
+        <tr><td>Submitted</td><td>{{ project.submitted_at | utc }}</td></tr>
+        {% if project.repo_url %}<tr><td>Repository</td><td><a href="{{ project.repo_url }}" rel="noreferrer noopener" target="_blank">{{ project.repo_url }}</a></td></tr>{% endif %}
+        {% if project.demo_url %}<tr><td>Demo</td><td><a href="{{ project.demo_url }}" rel="noreferrer noopener" target="_blank">{{ project.demo_url }}</a></td></tr>{% endif %}
+        {% if project.web_url %}<tr><td>Site</td><td><a href="{{ project.web_url }}" rel="noreferrer noopener" target="_blank">{{ project.web_url }}</a></td></tr>{% endif %}
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    {% if prizes %}
+      <div class="card">
+        <h3>Prizes in scope</h3>
+        <table><tbody>
+          {% for prize in prizes %}
+            <tr><td><strong>{{ prize.name }}</strong><div class="small muted">{{ prize.description }}</div></td></tr>
+          {% endfor %}
+        </tbody></table>
+      </div>
+    {% endif %}
+    <div class="card">
+      <h3>Judging information</h3>
+      <div class="sticky-note">
+        Scores, comments, judge identity, assignment metadata and normalization results are never exposed
+        on public pages. The API behind this page returns the same fields you see here — nothing more.
+        {% if event %}
+          <div class="small" style="margin-top:.5rem">
+            Judging window: {{ event.judging_starts_at | utc }} → {{ event.judging_ends_at | utc }}.
+            {% if publication_state == 'current' %}Results publication recorded {{ event.results_published_at | utc }} and is current; judge details remain private.{% elif publication_state == 'stale' %}A previous results publication is no longer current; judge details remain private.{% else %}Results have not been published.{% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

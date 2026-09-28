@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Sign in · RUNBOOK{% endblock %}
+{% block content %}
+<div class="narrow">
+  <h1>Sign in</h1>
+  {% if error %}<div class="flash error">{{ error }}</div>{% endif %}
+  <form method="post" action="{{ url_for('auth.login') }}" class="card">
+    <input type="hidden" name="next" value="{{ next_url }}">
+    <div class="stack">
+      <div><label for="email">Email</label><input id="email" type="email" name="email" autocomplete="username" required></div>
+      <div><label for="password">Password</label><input id="password" type="password" name="password" autocomplete="current-password" required></div>
+      <button class="btn" type="submit">Sign in</button>
+    </div>
+  </form>
+
+  <div class="card">
+    <h3>Seeded demo accounts</h3>
+    <p class="small muted">This is a self-hosted, fixture-seeded portal. The demo credentials are not secrets;
+      they exist so a judge can reproduce every claim in this submission.</p>
+    <table>
+      <thead><tr><th>Role</th><th>Email</th><th>Password</th></tr></thead>
+      <tbody>
+        <tr><td>Organizer</td><td class="mono">organizer@example.org</td><td class="mono">organizer123</td></tr>
+        <tr><td>Admin</td><td class="mono">admin@example.org</td><td class="mono">admin123</td></tr>
+        <tr><td>Judge</td><td class="mono">judge01@example.org</td><td class="mono">judge123</td></tr>
+        <tr><td>Participant</td><td class="mono">p0101@example.org</td><td class="mono">participant123</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

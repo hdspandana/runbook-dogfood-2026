@@ -1,0 +1,4176 @@
+{
+ "meta": {
+  "name": "RUNBOOK DOGFOOD 2026 fixture set",
+  "seed": 20260927,
+  "generated_for": "DOGFOOD 2026 acceptance",
+  "counts": {
+   "users": 161,
+   "events": 2,
+   "tracks": 12,
+   "prizes": 13,
+   "teams": 53,
+   "projects": 53,
+   "rubric_criteria": 8,
+   "assignments": 130
+  },
+  "situations": [
+   {
+    "situation": "closed submission window",
+    "where": "event A submission_deadline",
+    "why": "acceptance check 3 \u2014 a post-deadline submit must be rejected with 4xx"
+   },
+   {
+    "situation": "3 teams with drafts only",
+    "where": "event A projects at index 7, 19, 33",
+    "why": "drafts must never appear in the public gallery or in judging"
+   },
+   {
+    "situation": "incomplete review batches",
+    "where": "event A reviews with status=pending",
+    "why": "pending reviews must be exported as pending, never as zero"
+   },
+   {
+    "situation": "judge with zero variance",
+    "where": "the 'flat' persona judge",
+    "why": "population sigma == 0 must yield z == 0 rather than a divide-by-zero"
+   },
+   {
+    "situation": "judge with one completed review",
+    "where": "the 'sparse' persona judge",
+    "why": "insufficient sample must fall back to neutral normalization"
+   },
+   {
+    "situation": "idle judge",
+    "where": "the 'idle' persona judge",
+    "why": "assignment coverage must report a judge with zero assignments"
+   },
+   {
+    "situation": "cross-track isolation",
+    "where": "track-scoped judge preferences",
+    "why": "a judge must not read another track's protected judging data"
+   },
+   {
+    "situation": "stale normalization snapshot",
+    "where": "normalization_holdback",
+    "why": "the STALE Runbook state is demonstrable at boot without interaction"
+   }
+  ]
+ },
+ "users": [
+  {
+   "email": "organizer@example.org",
+   "display_name": "Nadia Okonjo (organizer)",
+   "role": "organizer",
+   "password": "organizer123"
+  },
+  {
+   "email": "admin@example.org",
+   "display_name": "Sam Ferreira (admin)",
+   "role": "admin",
+   "password": "admin123"
+  },
+  {
+   "email": "judge01@example.org",
+   "display_name": "Vikram Sharma (judge 01)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge02@example.org",
+   "display_name": "Ritu Menon (judge 02)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge03@example.org",
+   "display_name": "Deepak Shetty (judge 03)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge04@example.org",
+   "display_name": "Nandini Chopra (judge 04)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge05@example.org",
+   "display_name": "Girish Kapoor (judge 05)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge06@example.org",
+   "display_name": "Naina Pillai (judge 06)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge07@example.org",
+   "display_name": "Vivek Iyer (judge 07)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge08@example.org",
+   "display_name": "Sneha Patel (judge 08)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge09@example.org",
+   "display_name": "Aditya Gupta (judge 09)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge10@example.org",
+   "display_name": "Kavya Kulkarni (judge 10)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge11@example.org",
+   "display_name": "Suresh Desai (judge 11)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge12@example.org",
+   "display_name": "Farhan Lal (judge 12)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge13@example.org",
+   "display_name": "Mohit Rajan (judge 13)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge14@example.org",
+   "display_name": "Uma Nair (judge 14)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge15@example.org",
+   "display_name": "Rohit Reddy (judge 15)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge16@example.org",
+   "display_name": "Tanvi Verma (judge 16)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge17@example.org",
+   "display_name": "Manish Bose (judge 17)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge18@example.org",
+   "display_name": "Pallavi Joshi (judge 18)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge19@example.org",
+   "display_name": "Esha Mishra (judge 19)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge20@example.org",
+   "display_name": "Leela Rao (judge 20)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge21@example.org",
+   "display_name": "Tarun Sharma (judge 21)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge22@example.org",
+   "display_name": "Ananya Menon (judge 22)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge23@example.org",
+   "display_name": "Rahul Shetty (judge 23)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge24@example.org",
+   "display_name": "Pooja Chopra (judge 24)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge25@example.org",
+   "display_name": "Gaurav Kapoor (judge 25)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge26@example.org",
+   "display_name": "Dhruv Pillai (judge 26)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge27@example.org",
+   "display_name": "Kiran Iyer (judge 27)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge28@example.org",
+   "display_name": "Sahana Patel (judge 28)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge29@example.org",
+   "display_name": "Karthik Gupta (judge 29)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "judge30@example.org",
+   "display_name": "Ishita Kulkarni (judge 30)",
+   "role": "judge",
+   "password": "judge123"
+  },
+  {
+   "email": "p011@example.org",
+   "display_name": "Rohit Gupta",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p012@example.org",
+   "display_name": "Neha Kulkarni",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p013@example.org",
+   "display_name": "Suresh Desai",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p021@example.org",
+   "display_name": "Ishita Joshi",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p022@example.org",
+   "display_name": "Deepak Mishra",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p023@example.org",
+   "display_name": "Dhruv Rao",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p024@example.org",
+   "display_name": "Omkar Sharma",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p031@example.org",
+   "display_name": "Sameer Iyer",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p032@example.org",
+   "display_name": "Pallavi Patel",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p033@example.org",
+   "display_name": "Imran Gupta",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p041@example.org",
+   "display_name": "Kavya Verma",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p042@example.org",
+   "display_name": "Chandan Bose",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p051@example.org",
+   "display_name": "Gaurav Kapoor",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p052@example.org",
+   "display_name": "Hema Pillai",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p061@example.org",
+   "display_name": "Bhavna Nair",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p062@example.org",
+   "display_name": "Mohit Reddy",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p071@example.org",
+   "display_name": "Girish Shetty",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p072@example.org",
+   "display_name": "Sahana Chopra",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p073@example.org",
+   "display_name": "Vikram Kapoor",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p074@example.org",
+   "display_name": "Pooja Pillai",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p081@example.org",
+   "display_name": "Leela Lal",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p082@example.org",
+   "display_name": "Arun Rajan",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p083@example.org",
+   "display_name": "Tanvi Nair",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p084@example.org",
+   "display_name": "Aravind Reddy",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p091@example.org",
+   "display_name": "Rachit Sharma",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p092@example.org",
+   "display_name": "Sneha Menon",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p093@example.org",
+   "display_name": "Varun Shetty",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p101@example.org",
+   "display_name": "Priya Kulkarni",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p102@example.org",
+   "display_name": "Rahul Desai",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p111@example.org",
+   "display_name": "Rohit Mishra",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p112@example.org",
+   "display_name": "Neha Rao",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p113@example.org",
+   "display_name": "Suresh Sharma",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p121@example.org",
+   "display_name": "Ishita Patel",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p122@example.org",
+   "display_name": "Deepak Gupta",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p131@example.org",
+   "display_name": "Sameer Bose",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p132@example.org",
+   "display_name": "Pallavi Joshi",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p133@example.org",
+   "display_name": "Imran Mishra",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p141@example.org",
+   "display_name": "Kavya Pillai",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p142@example.org",
+   "display_name": "Chandan Iyer",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p143@example.org",
+   "display_name": "Naina Patel",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p144@example.org",
+   "display_name": "Karthik Gupta",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p151@example.org",
+   "display_name": "Gaurav Reddy",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p152@example.org",
+   "display_name": "Hema Verma",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p153@example.org",
+   "display_name": "Tarun Bose",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p161@example.org",
+   "display_name": "Bhavna Chopra",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p162@example.org",
+   "display_name": "Mohit Kapoor",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p163@example.org",
+   "display_name": "Meera Pillai",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p171@example.org",
+   "display_name": "Girish Rajan",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p172@example.org",
+   "display_name": "Sahana Nair",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p181@example.org",
+   "display_name": "Leela Menon",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p182@example.org",
+   "display_name": "Arun Shetty",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p183@example.org",
+   "display_name": "Tanvi Chopra",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p191@example.org",
+   "display_name": "Rachit Desai",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p192@example.org",
+   "display_name": "Sneha Lal",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p193@example.org",
+   "display_name": "Varun Rajan",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p201@example.org",
+   "display_name": "Priya Rao",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p202@example.org",
+   "display_name": "Rahul Sharma",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p203@example.org",
+   "display_name": "Shruti Menon",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p211@example.org",
+   "display_name": "Rohit Gupta",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p212@example.org",
+   "display_name": "Neha Kulkarni",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p221@example.org",
+   "display_name": "Ishita Joshi",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p222@example.org",
+   "display_name": "Deepak Mishra",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p223@example.org",
+   "display_name": "Dhruv Rao",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p231@example.org",
+   "display_name": "Sameer Iyer",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p232@example.org",
+   "display_name": "Pallavi Patel",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p241@example.org",
+   "display_name": "Kavya Verma",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p242@example.org",
+   "display_name": "Chandan Bose",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p243@example.org",
+   "display_name": "Naina Joshi",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p251@example.org",
+   "display_name": "Gaurav Kapoor",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p252@example.org",
+   "display_name": "Hema Pillai",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p253@example.org",
+   "display_name": "Tarun Iyer",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p261@example.org",
+   "display_name": "Bhavna Nair",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p262@example.org",
+   "display_name": "Mohit Reddy",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p263@example.org",
+   "display_name": "Meera Verma",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p264@example.org",
+   "display_name": "Aditya Bose",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p271@example.org",
+   "display_name": "Girish Shetty",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p272@example.org",
+   "display_name": "Sahana Chopra",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p281@example.org",
+   "display_name": "Leela Lal",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p282@example.org",
+   "display_name": "Arun Rajan",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p283@example.org",
+   "display_name": "Tanvi Nair",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p284@example.org",
+   "display_name": "Aravind Reddy",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p291@example.org",
+   "display_name": "Rachit Sharma",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p292@example.org",
+   "display_name": "Sneha Menon",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p301@example.org",
+   "display_name": "Priya Kulkarni",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p302@example.org",
+   "display_name": "Rahul Desai",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p311@example.org",
+   "display_name": "Rohit Mishra",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p312@example.org",
+   "display_name": "Neha Rao",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p321@example.org",
+   "display_name": "Ishita Patel",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p322@example.org",
+   "display_name": "Deepak Gupta",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p323@example.org",
+   "display_name": "Dhruv Kulkarni",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p324@example.org",
+   "display_name": "Omkar Desai",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p331@example.org",
+   "display_name": "Sameer Bose",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p332@example.org",
+   "display_name": "Pallavi Joshi",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p341@example.org",
+   "display_name": "Kavya Pillai",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p342@example.org",
+   "display_name": "Chandan Iyer",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p343@example.org",
+   "display_name": "Naina Patel",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p351@example.org",
+   "display_name": "Gaurav Reddy",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p352@example.org",
+   "display_name": "Hema Verma",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p353@example.org",
+   "display_name": "Tarun Bose",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p361@example.org",
+   "display_name": "Bhavna Chopra",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p362@example.org",
+   "display_name": "Mohit Kapoor",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p363@example.org",
+   "display_name": "Meera Pillai",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p371@example.org",
+   "display_name": "Girish Rajan",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p372@example.org",
+   "display_name": "Sahana Nair",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p381@example.org",
+   "display_name": "Leela Menon",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p382@example.org",
+   "display_name": "Arun Shetty",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p383@example.org",
+   "display_name": "Tanvi Chopra",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p391@example.org",
+   "display_name": "Rachit Desai",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p392@example.org",
+   "display_name": "Sneha Lal",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p393@example.org",
+   "display_name": "Varun Rajan",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p394@example.org",
+   "display_name": "Nandini Nair",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p401@example.org",
+   "display_name": "Priya Rao",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p402@example.org",
+   "display_name": "Rahul Sharma",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p403@example.org",
+   "display_name": "Shruti Menon",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p411@example.org",
+   "display_name": "Rohit Gupta",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p412@example.org",
+   "display_name": "Neha Kulkarni",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "p413@example.org",
+   "display_name": "Suresh Desai",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "q01@example.org",
+   "display_name": "Pilot Participant 1",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "q02@example.org",
+   "display_name": "Pilot Participant 2",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "q03@example.org",
+   "display_name": "Pilot Participant 3",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "q04@example.org",
+   "display_name": "Pilot Participant 4",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "q05@example.org",
+   "display_name": "Pilot Participant 5",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "q06@example.org",
+   "display_name": "Pilot Participant 6",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "q07@example.org",
+   "display_name": "Pilot Participant 7",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "q08@example.org",
+   "display_name": "Pilot Participant 8",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "q09@example.org",
+   "display_name": "Pilot Participant 9",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "q10@example.org",
+   "display_name": "Pilot Participant 10",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "q11@example.org",
+   "display_name": "Pilot Participant 11",
+   "role": "participant",
+   "password": "participant123"
+  },
+  {
+   "email": "q12@example.org",
+   "display_name": "Pilot Participant 12",
+   "role": "participant",
+   "password": "participant123"
+  }
+ ],
+ "events": [
+  {
+   "slug": "dogfood-2026-raptors-open",
+   "name": "DOGFOOD 2026 \u2014 Raptors Open",
+   "tagline": "Ship something that survives contact with real users.",
+   "location": "Bengaluru, IN + remote",
+   "timezone_label": "UTC",
+   "starts_at": "2026-03-01T09:00:00Z",
+   "submission_deadline": "2026-03-14T18:00:00Z",
+   "judging_starts_at": "2026-08-20T00:00:00Z",
+   "judging_ends_at": "2026-10-20T18:00:00Z",
+   "results_published_at": null,
+   "created_by_email": "organizer@example.org"
+  },
+  {
+   "slug": "raptors-pilot-open-hack",
+   "name": "Raptors Pilot Open Hack",
+   "tagline": "A smaller open event used to exercise the live submission path.",
+   "location": "Remote",
+   "timezone_label": "UTC",
+   "starts_at": "2026-09-20T09:00:00Z",
+   "submission_deadline": "2026-11-14T18:00:00Z",
+   "judging_starts_at": "2026-11-16T00:00:00Z",
+   "judging_ends_at": "2026-11-30T18:00:00Z",
+   "results_published_at": null,
+   "created_by_email": "organizer@example.org"
+  }
+ ],
+ "tracks": [
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Agentic Workflows",
+   "slug": "agentic-workflows",
+   "description": "Autonomous agents that get real work done end to end.",
+   "sort_order": 0
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Developer Tooling",
+   "slug": "developer-tooling",
+   "description": "Tools that make engineers faster or happier.",
+   "sort_order": 1
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Applied ML",
+   "slug": "applied-ml",
+   "description": "Models in production with measurable outcomes.",
+   "sort_order": 2
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Data & Observability",
+   "slug": "data-observability",
+   "description": "Pipelines, telemetry and the truth about what happened.",
+   "sort_order": 3
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Security & Trust",
+   "slug": "security-trust",
+   "description": "Hardening, privacy and verifiable systems.",
+   "sort_order": 4
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Edge & Embedded",
+   "slug": "edge-embedded",
+   "description": "Software that runs where the network does not.",
+   "sort_order": 5
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Sustainability",
+   "slug": "sustainability",
+   "description": "Systems that reduce energy or material waste.",
+   "sort_order": 6
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Open Data",
+   "slug": "open-data",
+   "description": "Public-interest datasets made usable.",
+   "sort_order": 7
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Agentic Workflows",
+   "slug": "agentic-workflows",
+   "description": "Autonomous agents that get real work done end to end.",
+   "sort_order": 0
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Developer Tooling",
+   "slug": "developer-tooling",
+   "description": "Tools that make engineers faster or happier.",
+   "sort_order": 1
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Applied ML",
+   "slug": "applied-ml",
+   "description": "Models in production with measurable outcomes.",
+   "sort_order": 2
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Data & Observability",
+   "slug": "data-observability",
+   "description": "Pipelines, telemetry and the truth about what happened.",
+   "sort_order": 3
+  }
+ ],
+ "prizes": [
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "track_slug": null,
+   "name": "Grand Prize",
+   "rank": 1,
+   "description": "Best overall project, by normalized score across all tracks."
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "track_slug": null,
+   "name": "Runner-up",
+   "rank": 2,
+   "description": "Second place by normalized score."
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "track_slug": null,
+   "name": "Most Useful Failure",
+   "rank": null,
+   "description": "For the team whose post-mortem taught the room the most."
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "track_slug": "agentic-workflows",
+   "name": "Agentic Workflows Track Winner",
+   "rank": 1,
+   "description": "Best project in Agentic Workflows."
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "track_slug": "developer-tooling",
+   "name": "Developer Tooling Track Winner",
+   "rank": 1,
+   "description": "Best project in Developer Tooling."
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "track_slug": "applied-ml",
+   "name": "Applied ML Track Winner",
+   "rank": 1,
+   "description": "Best project in Applied ML."
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "track_slug": "data-observability",
+   "name": "Data & Observability Track Winner",
+   "rank": 1,
+   "description": "Best project in Data & Observability."
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "track_slug": "security-trust",
+   "name": "Security & Trust Track Winner",
+   "rank": 1,
+   "description": "Best project in Security & Trust."
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "track_slug": "edge-embedded",
+   "name": "Edge & Embedded Track Winner",
+   "rank": 1,
+   "description": "Best project in Edge & Embedded."
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "track_slug": "sustainability",
+   "name": "Sustainability Track Winner",
+   "rank": 1,
+   "description": "Best project in Sustainability."
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "track_slug": "open-data",
+   "name": "Open Data Track Winner",
+   "rank": 1,
+   "description": "Best project in Open Data."
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "track_slug": null,
+   "name": "Pilot Prize",
+   "rank": 1,
+   "description": "Best project in the pilot event."
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "track_slug": "agentic-workflows",
+   "name": "Agentic Track Winner",
+   "rank": 1,
+   "description": "Best autonomous-agent project."
+  }
+ ],
+ "teams": [
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Ambient Ledger",
+   "lead_email": "p011@example.org",
+   "members": [
+    "p011@example.org",
+    "p012@example.org",
+    "p013@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Quiet Compass",
+   "lead_email": "p021@example.org",
+   "members": [
+    "p021@example.org",
+    "p022@example.org",
+    "p023@example.org",
+    "p024@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Wintermute Beacon",
+   "lead_email": "p031@example.org",
+   "members": [
+    "p031@example.org",
+    "p032@example.org",
+    "p033@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Copper Harbour",
+   "lead_email": "p041@example.org",
+   "members": [
+    "p041@example.org",
+    "p042@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Honest Relay",
+   "lead_email": "p051@example.org",
+   "members": [
+    "p051@example.org",
+    "p052@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Low-latency Quarry",
+   "lead_email": "p061@example.org",
+   "members": [
+    "p061@example.org",
+    "p062@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Offline Lantern",
+   "lead_email": "p071@example.org",
+   "members": [
+    "p071@example.org",
+    "p072@example.org",
+    "p073@example.org",
+    "p074@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Federated Forge",
+   "lead_email": "p081@example.org",
+   "members": [
+    "p081@example.org",
+    "p082@example.org",
+    "p083@example.org",
+    "p084@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Bare-metal Signal",
+   "lead_email": "p091@example.org",
+   "members": [
+    "p091@example.org",
+    "p092@example.org",
+    "p093@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Midnight Anchor",
+   "lead_email": "p101@example.org",
+   "members": [
+    "p101@example.org",
+    "p102@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Open Prism",
+   "lead_email": "p111@example.org",
+   "members": [
+    "p111@example.org",
+    "p112@example.org",
+    "p113@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Deterministic Trellis",
+   "lead_email": "p121@example.org",
+   "members": [
+    "p121@example.org",
+    "p122@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Wet Mosaic",
+   "lead_email": "p131@example.org",
+   "members": [
+    "p131@example.org",
+    "p132@example.org",
+    "p133@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Tidal Verdict",
+   "lead_email": "p141@example.org",
+   "members": [
+    "p141@example.org",
+    "p142@example.org",
+    "p143@example.org",
+    "p144@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Frugal Ridge",
+   "lead_email": "p151@example.org",
+   "members": [
+    "p151@example.org",
+    "p152@example.org",
+    "p153@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Signal Cascade",
+   "lead_email": "p161@example.org",
+   "members": [
+    "p161@example.org",
+    "p162@example.org",
+    "p163@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Salt Atlas",
+   "lead_email": "p171@example.org",
+   "members": [
+    "p171@example.org",
+    "p172@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Iron Beacon",
+   "lead_email": "p181@example.org",
+   "members": [
+    "p181@example.org",
+    "p182@example.org",
+    "p183@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Paper Cinder",
+   "lead_email": "p191@example.org",
+   "members": [
+    "p191@example.org",
+    "p192@example.org",
+    "p193@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Blackbox Drift",
+   "lead_email": "p201@example.org",
+   "members": [
+    "p201@example.org",
+    "p202@example.org",
+    "p203@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Daylight Ember",
+   "lead_email": "p211@example.org",
+   "members": [
+    "p211@example.org",
+    "p212@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Rust Foundry",
+   "lead_email": "p221@example.org",
+   "members": [
+    "p221@example.org",
+    "p222@example.org",
+    "p223@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Static Gauge",
+   "lead_email": "p231@example.org",
+   "members": [
+    "p231@example.org",
+    "p232@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Warm Hollow",
+   "lead_email": "p241@example.org",
+   "members": [
+    "p241@example.org",
+    "p242@example.org",
+    "p243@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Sparse Isolde",
+   "lead_email": "p251@example.org",
+   "members": [
+    "p251@example.org",
+    "p252@example.org",
+    "p253@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Dense Jetty",
+   "lead_email": "p261@example.org",
+   "members": [
+    "p261@example.org",
+    "p262@example.org",
+    "p263@example.org",
+    "p264@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Cold Kestrel",
+   "lead_email": "p271@example.org",
+   "members": [
+    "p271@example.org",
+    "p272@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Long Lattice",
+   "lead_email": "p281@example.org",
+   "members": [
+    "p281@example.org",
+    "p282@example.org",
+    "p283@example.org",
+    "p284@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Short Meridian",
+   "lead_email": "p291@example.org",
+   "members": [
+    "p291@example.org",
+    "p292@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Narrow Nimbus",
+   "lead_email": "p301@example.org",
+   "members": [
+    "p301@example.org",
+    "p302@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Wide Orchard",
+   "lead_email": "p311@example.org",
+   "members": [
+    "p311@example.org",
+    "p312@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Deep Palisade",
+   "lead_email": "p321@example.org",
+   "members": [
+    "p321@example.org",
+    "p322@example.org",
+    "p323@example.org",
+    "p324@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Shallow Quill",
+   "lead_email": "p331@example.org",
+   "members": [
+    "p331@example.org",
+    "p332@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "First Runway",
+   "lead_email": "p341@example.org",
+   "members": [
+    "p341@example.org",
+    "p342@example.org",
+    "p343@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Last Slate",
+   "lead_email": "p351@example.org",
+   "members": [
+    "p351@example.org",
+    "p352@example.org",
+    "p353@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Half Tidepool",
+   "lead_email": "p361@example.org",
+   "members": [
+    "p361@example.org",
+    "p362@example.org",
+    "p363@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Double Umbra",
+   "lead_email": "p371@example.org",
+   "members": [
+    "p371@example.org",
+    "p372@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Zero Vantage",
+   "lead_email": "p381@example.org",
+   "members": [
+    "p381@example.org",
+    "p382@example.org",
+    "p383@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Whole Warden",
+   "lead_email": "p391@example.org",
+   "members": [
+    "p391@example.org",
+    "p392@example.org",
+    "p393@example.org",
+    "p394@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Split Xenon",
+   "lead_email": "p401@example.org",
+   "members": [
+    "p401@example.org",
+    "p402@example.org",
+    "p403@example.org"
+   ]
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Shared Yardarm",
+   "lead_email": "p411@example.org",
+   "members": [
+    "p411@example.org",
+    "p412@example.org",
+    "p413@example.org"
+   ]
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Pilot Team 01",
+   "lead_email": "q01@example.org",
+   "members": [
+    "q01@example.org"
+   ]
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Pilot Team 02",
+   "lead_email": "q02@example.org",
+   "members": [
+    "q02@example.org"
+   ]
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Pilot Team 03",
+   "lead_email": "q03@example.org",
+   "members": [
+    "q03@example.org"
+   ]
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Pilot Team 04",
+   "lead_email": "q04@example.org",
+   "members": [
+    "q04@example.org"
+   ]
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Pilot Team 05",
+   "lead_email": "q05@example.org",
+   "members": [
+    "q05@example.org"
+   ]
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Pilot Team 06",
+   "lead_email": "q06@example.org",
+   "members": [
+    "q06@example.org"
+   ]
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Pilot Team 07",
+   "lead_email": "q07@example.org",
+   "members": [
+    "q07@example.org"
+   ]
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Pilot Team 08",
+   "lead_email": "q08@example.org",
+   "members": [
+    "q08@example.org"
+   ]
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Pilot Team 09",
+   "lead_email": "q09@example.org",
+   "members": [
+    "q09@example.org"
+   ]
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Pilot Team 10",
+   "lead_email": "q10@example.org",
+   "members": [
+    "q10@example.org"
+   ]
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Pilot Team 11",
+   "lead_email": "q11@example.org",
+   "members": [
+    "q11@example.org"
+   ]
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Pilot Team 12",
+   "lead_email": "q12@example.org",
+   "members": [
+    "q12@example.org"
+   ]
+  }
+ ],
+ "projects": [
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Ambient Ledger",
+   "track_slug": "agentic-workflows",
+   "name": "Ambient Ledger",
+   "tagline": "Agentic Workflows with a measurable claim attached.",
+   "description": "Fixture project #1 in the Agentic Workflows track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/ledger-1",
+   "demo_url": "https://ledger1.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-12T12:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Quiet Compass",
+   "track_slug": "developer-tooling",
+   "name": "Quiet Compass",
+   "tagline": "Developer Tooling with a measurable claim attached.",
+   "description": "Fixture project #2 in the Developer Tooling track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/compass-2",
+   "demo_url": "https://compass2.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-12T15:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Wintermute Beacon",
+   "track_slug": "applied-ml",
+   "name": "Wintermute Beacon",
+   "tagline": "Applied ML with a measurable claim attached.",
+   "description": "Fixture project #3 in the Applied ML track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/beacon-3",
+   "demo_url": "https://beacon3.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-12T18:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Copper Harbour",
+   "track_slug": "data-observability",
+   "name": "Copper Harbour",
+   "tagline": "Data & Observability with a measurable claim attached.",
+   "description": "Fixture project #4 in the Data & Observability track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/harbour-4",
+   "demo_url": "https://harbour4.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-12T21:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Honest Relay",
+   "track_slug": "security-trust",
+   "name": "Honest Relay",
+   "tagline": "Security & Trust with a measurable claim attached.",
+   "description": "Fixture project #5 in the Security & Trust track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/relay-5",
+   "demo_url": "https://relay5.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-13T00:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Low-latency Quarry",
+   "track_slug": "edge-embedded",
+   "name": "Low-latency Quarry",
+   "tagline": "Edge & Embedded with a measurable claim attached.",
+   "description": "Fixture project #6 in the Edge & Embedded track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/quarry-6",
+   "demo_url": "https://quarry6.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-13T03:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Offline Lantern",
+   "track_slug": "sustainability",
+   "name": "Offline Lantern",
+   "tagline": "Sustainability with a measurable claim attached.",
+   "description": "Fixture project #7 in the Sustainability track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/lantern-7",
+   "demo_url": "https://lantern7.demo.example.org",
+   "web_url": "",
+   "status": "draft",
+   "submitted_at": null
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Federated Forge",
+   "track_slug": "open-data",
+   "name": "Federated Forge",
+   "tagline": "Open Data with a measurable claim attached.",
+   "description": "Fixture project #8 in the Open Data track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/forge-8",
+   "demo_url": "https://forge8.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-13T09:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Bare-metal Signal",
+   "track_slug": "agentic-workflows",
+   "name": "Bare-metal Signal",
+   "tagline": "Agentic Workflows with a measurable claim attached.",
+   "description": "Fixture project #9 in the Agentic Workflows track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/signal-9",
+   "demo_url": "https://signal9.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-13T12:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Midnight Anchor",
+   "track_slug": "developer-tooling",
+   "name": "Midnight Anchor",
+   "tagline": "Developer Tooling with a measurable claim attached.",
+   "description": "Fixture project #10 in the Developer Tooling track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/anchor-10",
+   "demo_url": "https://anchor10.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-13T15:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Open Prism",
+   "track_slug": "applied-ml",
+   "name": "Open Prism",
+   "tagline": "Applied ML with a measurable claim attached.",
+   "description": "Fixture project #11 in the Applied ML track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/prism-11",
+   "demo_url": "https://prism11.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-13T18:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Deterministic Trellis",
+   "track_slug": "data-observability",
+   "name": "Deterministic Trellis",
+   "tagline": "Data & Observability with a measurable claim attached.",
+   "description": "Fixture project #12 in the Data & Observability track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/trellis-12",
+   "demo_url": "https://trellis12.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-13T21:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Wet Mosaic",
+   "track_slug": "security-trust",
+   "name": "Wet Mosaic",
+   "tagline": "Security & Trust with a measurable claim attached.",
+   "description": "Fixture project #13 in the Security & Trust track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/mosaic-13",
+   "demo_url": "https://mosaic13.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-14T00:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Tidal Verdict",
+   "track_slug": "edge-embedded",
+   "name": "Tidal Verdict",
+   "tagline": "Edge & Embedded with a measurable claim attached.",
+   "description": "Fixture project #14 in the Edge & Embedded track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/verdict-14",
+   "demo_url": "https://verdict14.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-14T03:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Frugal Ridge",
+   "track_slug": "sustainability",
+   "name": "Frugal Ridge",
+   "tagline": "Sustainability with a measurable claim attached.",
+   "description": "Fixture project #15 in the Sustainability track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/ridge-15",
+   "demo_url": "https://ridge15.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-14T06:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Signal Cascade",
+   "track_slug": "open-data",
+   "name": "Signal Cascade",
+   "tagline": "Open Data with a measurable claim attached.",
+   "description": "Fixture project #16 in the Open Data track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/cascade-16",
+   "demo_url": "https://cascade16.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-14T09:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Salt Atlas",
+   "track_slug": "agentic-workflows",
+   "name": "Salt Atlas",
+   "tagline": "Agentic Workflows with a measurable claim attached.",
+   "description": "Fixture project #17 in the Agentic Workflows track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/atlas-17",
+   "demo_url": "https://atlas17.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-14T12:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Iron Beacon",
+   "track_slug": "developer-tooling",
+   "name": "Iron Beacon",
+   "tagline": "Developer Tooling with a measurable claim attached.",
+   "description": "Fixture project #18 in the Developer Tooling track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/beacon-18",
+   "demo_url": "https://beacon18.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-14T15:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Paper Cinder",
+   "track_slug": "applied-ml",
+   "name": "Paper Cinder",
+   "tagline": "Applied ML with a measurable claim attached.",
+   "description": "Fixture project #19 in the Applied ML track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/cinder-19",
+   "demo_url": "https://cinder19.demo.example.org",
+   "web_url": "",
+   "status": "draft",
+   "submitted_at": null
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Blackbox Drift",
+   "track_slug": "data-observability",
+   "name": "Blackbox Drift",
+   "tagline": "Data & Observability with a measurable claim attached.",
+   "description": "Fixture project #20 in the Data & Observability track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/drift-20",
+   "demo_url": "https://drift20.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-14T21:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Daylight Ember",
+   "track_slug": "security-trust",
+   "name": "Daylight Ember",
+   "tagline": "Security & Trust with a measurable claim attached.",
+   "description": "Fixture project #21 in the Security & Trust track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/ember-21",
+   "demo_url": "https://ember21.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-15T00:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Rust Foundry",
+   "track_slug": "edge-embedded",
+   "name": "Rust Foundry",
+   "tagline": "Edge & Embedded with a measurable claim attached.",
+   "description": "Fixture project #22 in the Edge & Embedded track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/foundry-22",
+   "demo_url": "https://foundry22.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-15T03:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Static Gauge",
+   "track_slug": "sustainability",
+   "name": "Static Gauge",
+   "tagline": "Sustainability with a measurable claim attached.",
+   "description": "Fixture project #23 in the Sustainability track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/gauge-23",
+   "demo_url": "https://gauge23.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-15T06:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Warm Hollow",
+   "track_slug": "open-data",
+   "name": "Warm Hollow",
+   "tagline": "Open Data with a measurable claim attached.",
+   "description": "Fixture project #24 in the Open Data track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/hollow-24",
+   "demo_url": "https://hollow24.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-15T09:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Sparse Isolde",
+   "track_slug": "agentic-workflows",
+   "name": "Sparse Isolde",
+   "tagline": "Agentic Workflows with a measurable claim attached.",
+   "description": "Fixture project #25 in the Agentic Workflows track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/isolde-25",
+   "demo_url": "https://isolde25.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-15T12:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Dense Jetty",
+   "track_slug": "developer-tooling",
+   "name": "Dense Jetty",
+   "tagline": "Developer Tooling with a measurable claim attached.",
+   "description": "Fixture project #26 in the Developer Tooling track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/jetty-26",
+   "demo_url": "https://jetty26.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-15T15:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Cold Kestrel",
+   "track_slug": "applied-ml",
+   "name": "Cold Kestrel",
+   "tagline": "Applied ML with a measurable claim attached.",
+   "description": "Fixture project #27 in the Applied ML track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/kestrel-27",
+   "demo_url": "https://kestrel27.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-15T18:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Long Lattice",
+   "track_slug": "data-observability",
+   "name": "Long Lattice",
+   "tagline": "Data & Observability with a measurable claim attached.",
+   "description": "Fixture project #28 in the Data & Observability track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/lattice-28",
+   "demo_url": "https://lattice28.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-15T21:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Short Meridian",
+   "track_slug": "security-trust",
+   "name": "Short Meridian",
+   "tagline": "Security & Trust with a measurable claim attached.",
+   "description": "Fixture project #29 in the Security & Trust track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/meridian-29",
+   "demo_url": "https://meridian29.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-16T00:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Narrow Nimbus",
+   "track_slug": "edge-embedded",
+   "name": "Narrow Nimbus",
+   "tagline": "Edge & Embedded with a measurable claim attached.",
+   "description": "Fixture project #30 in the Edge & Embedded track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/nimbus-30",
+   "demo_url": "https://nimbus30.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-16T03:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Wide Orchard",
+   "track_slug": "sustainability",
+   "name": "Wide Orchard",
+   "tagline": "Sustainability with a measurable claim attached.",
+   "description": "Fixture project #31 in the Sustainability track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/orchard-31",
+   "demo_url": "https://orchard31.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-16T06:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Deep Palisade",
+   "track_slug": "open-data",
+   "name": "Deep Palisade",
+   "tagline": "Open Data with a measurable claim attached.",
+   "description": "Fixture project #32 in the Open Data track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/palisade-32",
+   "demo_url": "https://palisade32.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-16T09:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Shallow Quill",
+   "track_slug": "agentic-workflows",
+   "name": "Shallow Quill",
+   "tagline": "Agentic Workflows with a measurable claim attached.",
+   "description": "Fixture project #33 in the Agentic Workflows track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/quill-33",
+   "demo_url": "https://quill33.demo.example.org",
+   "web_url": "",
+   "status": "draft",
+   "submitted_at": null
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "First Runway",
+   "track_slug": "developer-tooling",
+   "name": "First Runway",
+   "tagline": "Developer Tooling with a measurable claim attached.",
+   "description": "Fixture project #34 in the Developer Tooling track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/runway-34",
+   "demo_url": "https://runway34.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-16T15:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Last Slate",
+   "track_slug": "applied-ml",
+   "name": "Last Slate",
+   "tagline": "Applied ML with a measurable claim attached.",
+   "description": "Fixture project #35 in the Applied ML track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/slate-35",
+   "demo_url": "https://slate35.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-16T18:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Half Tidepool",
+   "track_slug": "data-observability",
+   "name": "Half Tidepool",
+   "tagline": "Data & Observability with a measurable claim attached.",
+   "description": "Fixture project #36 in the Data & Observability track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/tidepool-36",
+   "demo_url": "https://tidepool36.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-16T21:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Double Umbra",
+   "track_slug": "security-trust",
+   "name": "Double Umbra",
+   "tagline": "Security & Trust with a measurable claim attached.",
+   "description": "Fixture project #37 in the Security & Trust track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/umbra-37",
+   "demo_url": "https://umbra37.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-17T00:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Zero Vantage",
+   "track_slug": "edge-embedded",
+   "name": "Zero Vantage",
+   "tagline": "Edge & Embedded with a measurable claim attached.",
+   "description": "Fixture project #38 in the Edge & Embedded track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/vantage-38",
+   "demo_url": "https://vantage38.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-17T03:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Whole Warden",
+   "track_slug": "sustainability",
+   "name": "Whole Warden",
+   "tagline": "Sustainability with a measurable claim attached.",
+   "description": "Fixture project #39 in the Sustainability track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/warden-39",
+   "demo_url": "https://warden39.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-17T06:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Split Xenon",
+   "track_slug": "open-data",
+   "name": "Split Xenon",
+   "tagline": "Open Data with a measurable claim attached.",
+   "description": "Fixture project #40 in the Open Data track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/xenon-40",
+   "demo_url": "https://xenon40.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-17T09:00:00Z"
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "team_name": "Shared Yardarm",
+   "track_slug": "agentic-workflows",
+   "name": "Shared Yardarm",
+   "tagline": "Agentic Workflows with a measurable claim attached.",
+   "description": "Fixture project #41 in the Agentic Workflows track. It exists so that the gallery, assignment coverage, judging progress and cross-judge normalization all run against a realistic volume of data rather than a single happy path. The description is deliberately long enough to exercise truncation, search matching and the public project detail page.",
+   "repo_url": "https://git.example.org/raptors/yardarm-41",
+   "demo_url": "https://yardarm41.demo.example.org",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-03-17T12:00:00Z"
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "team_name": "Pilot Team 01",
+   "track_slug": "agentic-workflows",
+   "name": "Pilot Project 01",
+   "tagline": "A pilot submission used to exercise the live participant flow.",
+   "description": "Short pilot description. This project exists so the organizer can watch submissions, assignments and judging move while the portal runs.",
+   "repo_url": "https://git.example.org/pilot/1",
+   "demo_url": "",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-09-25T12:00:00Z"
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "team_name": "Pilot Team 02",
+   "track_slug": "developer-tooling",
+   "name": "Pilot Project 02",
+   "tagline": "A pilot submission used to exercise the live participant flow.",
+   "description": "Short pilot description. This project exists so the organizer can watch submissions, assignments and judging move while the portal runs.",
+   "repo_url": "https://git.example.org/pilot/2",
+   "demo_url": "",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-09-25T12:00:00Z"
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "team_name": "Pilot Team 03",
+   "track_slug": "applied-ml",
+   "name": "Pilot Project 03",
+   "tagline": "A pilot submission used to exercise the live participant flow.",
+   "description": "Short pilot description. This project exists so the organizer can watch submissions, assignments and judging move while the portal runs.",
+   "repo_url": "https://git.example.org/pilot/3",
+   "demo_url": "",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-09-25T12:00:00Z"
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "team_name": "Pilot Team 04",
+   "track_slug": "data-observability",
+   "name": "Pilot Project 04",
+   "tagline": "A pilot submission used to exercise the live participant flow.",
+   "description": "Short pilot description. This project exists so the organizer can watch submissions, assignments and judging move while the portal runs.",
+   "repo_url": "https://git.example.org/pilot/4",
+   "demo_url": "",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-09-25T12:00:00Z"
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "team_name": "Pilot Team 05",
+   "track_slug": "agentic-workflows",
+   "name": "Pilot Project 05",
+   "tagline": "A pilot submission used to exercise the live participant flow.",
+   "description": "Short pilot description. This project exists so the organizer can watch submissions, assignments and judging move while the portal runs.",
+   "repo_url": "https://git.example.org/pilot/5",
+   "demo_url": "",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-09-25T12:00:00Z"
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "team_name": "Pilot Team 06",
+   "track_slug": "developer-tooling",
+   "name": "Pilot Project 06",
+   "tagline": "A pilot submission used to exercise the live participant flow.",
+   "description": "Short pilot description. This project exists so the organizer can watch submissions, assignments and judging move while the portal runs.",
+   "repo_url": "https://git.example.org/pilot/6",
+   "demo_url": "",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-09-25T12:00:00Z"
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "team_name": "Pilot Team 07",
+   "track_slug": "applied-ml",
+   "name": "Pilot Project 07",
+   "tagline": "A pilot submission used to exercise the live participant flow.",
+   "description": "Short pilot description. This project exists so the organizer can watch submissions, assignments and judging move while the portal runs.",
+   "repo_url": "https://git.example.org/pilot/7",
+   "demo_url": "",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-09-25T12:00:00Z"
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "team_name": "Pilot Team 08",
+   "track_slug": "data-observability",
+   "name": "Pilot Project 08",
+   "tagline": "A pilot submission used to exercise the live participant flow.",
+   "description": "Short pilot description. This project exists so the organizer can watch submissions, assignments and judging move while the portal runs.",
+   "repo_url": "https://git.example.org/pilot/8",
+   "demo_url": "",
+   "web_url": "",
+   "status": "submitted",
+   "submitted_at": "2026-09-25T12:00:00Z"
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "team_name": "Pilot Team 09",
+   "track_slug": "agentic-workflows",
+   "name": "Pilot Project 09",
+   "tagline": "A pilot submission used to exercise the live participant flow.",
+   "description": "Short pilot description. This project exists so the organizer can watch submissions, assignments and judging move while the portal runs.",
+   "repo_url": "https://git.example.org/pilot/9",
+   "demo_url": "",
+   "web_url": "",
+   "status": "draft",
+   "submitted_at": null
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "team_name": "Pilot Team 10",
+   "track_slug": "developer-tooling",
+   "name": "Pilot Project 10",
+   "tagline": "A pilot submission used to exercise the live participant flow.",
+   "description": "Short pilot description. This project exists so the organizer can watch submissions, assignments and judging move while the portal runs.",
+   "repo_url": "https://git.example.org/pilot/10",
+   "demo_url": "",
+   "web_url": "",
+   "status": "draft",
+   "submitted_at": null
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "team_name": "Pilot Team 11",
+   "track_slug": "applied-ml",
+   "name": "Pilot Project 11",
+   "tagline": "A pilot submission used to exercise the live participant flow.",
+   "description": "Short pilot description. This project exists so the organizer can watch submissions, assignments and judging move while the portal runs.",
+   "repo_url": "https://git.example.org/pilot/11",
+   "demo_url": "",
+   "web_url": "",
+   "status": "draft",
+   "submitted_at": null
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "team_name": "Pilot Team 12",
+   "track_slug": "data-observability",
+   "name": "Pilot Project 12",
+   "tagline": "A pilot submission used to exercise the live participant flow.",
+   "description": "Short pilot description. This project exists so the organizer can watch submissions, assignments and judging move while the portal runs.",
+   "repo_url": "https://git.example.org/pilot/12",
+   "demo_url": "",
+   "web_url": "",
+   "status": "draft",
+   "submitted_at": null
+  }
+ ],
+ "rubric_criteria": [
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Innovation",
+   "description": "Does this do something meaningfully new, or measurably better?",
+   "weight_pct": 25,
+   "max_score": 10,
+   "sort_order": 0
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Execution",
+   "description": "Does it work? Is it engineered rather than demonstrated?",
+   "weight_pct": 30,
+   "max_score": 10,
+   "sort_order": 1
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Impact",
+   "description": "Who benefits, and by how much, and how soon?",
+   "weight_pct": 25,
+   "max_score": 10,
+   "sort_order": 2
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "name": "Presentation",
+   "description": "Can a stranger understand the project and its evidence?",
+   "weight_pct": 20,
+   "max_score": 10,
+   "sort_order": 3
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Innovation",
+   "description": "Does this do something meaningfully new, or measurably better?",
+   "weight_pct": 25,
+   "max_score": 10,
+   "sort_order": 4
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Execution",
+   "description": "Does it work? Is it engineered rather than demonstrated?",
+   "weight_pct": 30,
+   "max_score": 10,
+   "sort_order": 5
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Impact",
+   "description": "Who benefits, and by how much, and how soon?",
+   "weight_pct": 25,
+   "max_score": 10,
+   "sort_order": 6
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "name": "Presentation",
+   "description": "Can a stranger understand the project and its evidence?",
+   "weight_pct": 20,
+   "max_score": 10,
+   "sort_order": 7
+  }
+ ],
+ "assignments": [
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Ambient Ledger",
+   "judge_email": "judge01@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Ambient Ledger",
+   "judge_email": "judge02@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 7.78,
+    "Execution": 6.89,
+    "Impact": 7.42,
+    "Presentation": 7.14
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Ambient Ledger",
+   "judge_email": "judge03@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Bare-metal Signal",
+   "judge_email": "judge02@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.49,
+    "Execution": 3.83,
+    "Impact": 5.23,
+    "Presentation": 6.34
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Bare-metal Signal",
+   "judge_email": "judge03@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Bare-metal Signal",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.73,
+    "Execution": 4.21,
+    "Impact": 5.79,
+    "Presentation": 5.55
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Salt Atlas",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.12,
+    "Execution": 8.28,
+    "Impact": 8.2,
+    "Presentation": 7.39
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Salt Atlas",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 7.09,
+    "Execution": 8.06,
+    "Impact": 10.0,
+    "Presentation": 8.68
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Salt Atlas",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 8.45,
+    "Execution": 6.77,
+    "Impact": 10.0,
+    "Presentation": 7.11
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Sparse Isolde",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.72,
+    "Execution": 4.91,
+    "Impact": 8.38,
+    "Presentation": 4.61
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Sparse Isolde",
+   "judge_email": "judge06@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Sparse Isolde",
+   "judge_email": "judge07@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.91,
+    "Execution": 7.94,
+    "Impact": 5.97,
+    "Presentation": 8.13
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Shared Yardarm",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.26,
+    "Execution": 6.65,
+    "Impact": 6.47,
+    "Presentation": 4.43
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Shared Yardarm",
+   "judge_email": "judge07@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.67,
+    "Execution": 6.43,
+    "Impact": 5.17,
+    "Presentation": 6.45
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Shared Yardarm",
+   "judge_email": "judge09@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Wintermute Beacon",
+   "judge_email": "judge01@example.org",
+   "complete": true,
+   "comment": "Interesting idea, but the current build is closer to a demo than a product.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 2.73,
+    "Execution": 3.86,
+    "Impact": 4.6,
+    "Presentation": 5.21
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Wintermute Beacon",
+   "judge_email": "judge02@example.org",
+   "complete": true,
+   "comment": "Interesting idea, but the current build is closer to a demo than a product.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.06,
+    "Execution": 6.2,
+    "Impact": 4.95,
+    "Presentation": 2.19
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Wintermute Beacon",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.34,
+    "Execution": 3.38,
+    "Impact": 2.3,
+    "Presentation": 3.85
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Open Prism",
+   "judge_email": "judge02@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.98,
+    "Execution": 6.26,
+    "Impact": 5.86,
+    "Presentation": 5.32
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Open Prism",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.24,
+    "Execution": 5.88,
+    "Impact": 7.06,
+    "Presentation": 6.19
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Open Prism",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 7.46,
+    "Execution": 5.48,
+    "Impact": 5.7,
+    "Presentation": 4.68
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Cold Kestrel",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 3.88,
+    "Execution": 6.01,
+    "Impact": 5.84,
+    "Presentation": 4.41
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Cold Kestrel",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.63,
+    "Execution": 6.46,
+    "Impact": 5.98,
+    "Presentation": 5.1
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Cold Kestrel",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.1,
+    "Execution": 4.89,
+    "Impact": 5.5,
+    "Presentation": 5.07
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Last Slate",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.92,
+    "Execution": 7.22,
+    "Impact": 8.33,
+    "Presentation": 7.3
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Last Slate",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 7.2,
+    "Execution": 7.39,
+    "Impact": 7.4,
+    "Presentation": 8.1
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Last Slate",
+   "judge_email": "judge07@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.24,
+    "Execution": 8.67,
+    "Impact": 8.57,
+    "Presentation": 6.46
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Copper Harbour",
+   "judge_email": "judge01@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.27,
+    "Execution": 5.65,
+    "Impact": 6.85,
+    "Presentation": 6.65
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Copper Harbour",
+   "judge_email": "judge02@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.04,
+    "Execution": 6.56,
+    "Impact": 6.15,
+    "Presentation": 5.17
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Copper Harbour",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.23,
+    "Execution": 5.69,
+    "Impact": 6.56,
+    "Presentation": 5.16
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Deterministic Trellis",
+   "judge_email": "judge02@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 9.25,
+    "Execution": 9.75,
+    "Impact": 8.82,
+    "Presentation": 8.25
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Deterministic Trellis",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 9.66,
+    "Execution": 9.75,
+    "Impact": 7.15,
+    "Presentation": 7.53
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Deterministic Trellis",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 8.77,
+    "Execution": 8.63,
+    "Impact": 7.39,
+    "Presentation": 9.17
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Blackbox Drift",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Interesting idea, but the current build is closer to a demo than a product.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 0.76,
+    "Execution": 2.02,
+    "Impact": 2.94,
+    "Presentation": 0.9
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Blackbox Drift",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 2.62,
+    "Execution": 2.16,
+    "Impact": 2.11,
+    "Presentation": 1.57
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Blackbox Drift",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Scope is too wide for the evidence provided.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 3.04,
+    "Execution": 2.84,
+    "Impact": 2.51,
+    "Presentation": 2.91
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Long Lattice",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Scope is too wide for the evidence provided.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 2.02,
+    "Execution": 4.45,
+    "Impact": 3.58,
+    "Presentation": 4.45
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Long Lattice",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.34,
+    "Execution": 2.45,
+    "Impact": 3.5,
+    "Presentation": 3.36
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Long Lattice",
+   "judge_email": "judge07@example.org",
+   "complete": true,
+   "comment": "Scope is too wide for the evidence provided.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 4.3,
+    "Execution": 4.59,
+    "Impact": 6.69,
+    "Presentation": 3.04
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Half Tidepool",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Interesting idea, but the current build is closer to a demo than a product.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 4.28,
+    "Execution": 4.11,
+    "Impact": 4.77,
+    "Presentation": 4.46
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Half Tidepool",
+   "judge_email": "judge07@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.37,
+    "Execution": 4.62,
+    "Impact": 4.81,
+    "Presentation": 4.67
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Half Tidepool",
+   "judge_email": "judge09@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 4.29,
+    "Execution": 2.4,
+    "Impact": 5.62,
+    "Presentation": 3.43
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Quiet Compass",
+   "judge_email": "judge01@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 7.39,
+    "Execution": 4.35,
+    "Impact": 6.16,
+    "Presentation": 7.07
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Quiet Compass",
+   "judge_email": "judge02@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.59,
+    "Execution": 7.27,
+    "Impact": 6.34,
+    "Presentation": 7.41
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Quiet Compass",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 7.2,
+    "Execution": 6.73,
+    "Impact": 7.65,
+    "Presentation": 6.06
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Midnight Anchor",
+   "judge_email": "judge02@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.72,
+    "Execution": 6.55,
+    "Impact": 7.4,
+    "Presentation": 7.1
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Midnight Anchor",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 7.57,
+    "Execution": 7.18,
+    "Impact": 8.09,
+    "Presentation": 7.73
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Midnight Anchor",
+   "judge_email": "judge04@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 7.14,
+    "Execution": 6.07,
+    "Impact": 4.27,
+    "Presentation": 8.59
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Iron Beacon",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 2.7,
+    "Execution": 5.74,
+    "Impact": 6.05,
+    "Presentation": 5.6
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Iron Beacon",
+   "judge_email": "judge04@example.org",
+   "complete": true,
+   "comment": "Interesting idea, but the current build is closer to a demo than a product.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.33,
+    "Execution": 4.33,
+    "Impact": 4.61,
+    "Presentation": 6.68
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Iron Beacon",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 4.25,
+    "Execution": 6.55,
+    "Impact": 6.43,
+    "Presentation": 4.95
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Dense Jetty",
+   "judge_email": "judge04@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 7.22,
+    "Execution": 4.15,
+    "Impact": 4.9,
+    "Presentation": 5.72
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Dense Jetty",
+   "judge_email": "judge05@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Dense Jetty",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Scope is too wide for the evidence provided.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.2,
+    "Execution": 4.84,
+    "Impact": 4.04,
+    "Presentation": 5.66
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "First Runway",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 8.34,
+    "Execution": 7.82,
+    "Impact": 7.77,
+    "Presentation": 6.76
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "First Runway",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 7.59,
+    "Execution": 7.36,
+    "Impact": 6.76,
+    "Presentation": 8.39
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "First Runway",
+   "judge_email": "judge07@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Low-latency Quarry",
+   "judge_email": "judge01@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 4.89,
+    "Execution": 6.23,
+    "Impact": 4.26,
+    "Presentation": 5.53
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Low-latency Quarry",
+   "judge_email": "judge02@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.58,
+    "Execution": 5.5,
+    "Impact": 4.96,
+    "Presentation": 3.11
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Low-latency Quarry",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.5,
+    "Execution": 4.64,
+    "Impact": 5.68,
+    "Presentation": 4.72
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Tidal Verdict",
+   "judge_email": "judge02@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.74,
+    "Execution": 5.74,
+    "Impact": 7.03,
+    "Presentation": 4.63
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Tidal Verdict",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.85,
+    "Execution": 5.47,
+    "Impact": 4.87,
+    "Presentation": 8.15
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Tidal Verdict",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.95,
+    "Execution": 7.4,
+    "Impact": 7.18,
+    "Presentation": 6.36
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Rust Foundry",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Interesting idea, but the current build is closer to a demo than a product.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 1.98,
+    "Execution": 2.93,
+    "Impact": 2.3,
+    "Presentation": 1.51
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Rust Foundry",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.32,
+    "Execution": 5.13,
+    "Impact": 2.59,
+    "Presentation": 2.39
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Rust Foundry",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Interesting idea, but the current build is closer to a demo than a product.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.33,
+    "Execution": 4.52,
+    "Impact": 1.19,
+    "Presentation": 1.55
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Narrow Nimbus",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Interesting idea, but the current build is closer to a demo than a product.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 3.16,
+    "Execution": 3.47,
+    "Impact": 3.78,
+    "Presentation": 4.46
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Narrow Nimbus",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 4.0,
+    "Execution": 1.33,
+    "Impact": 4.95,
+    "Presentation": 3.6
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Narrow Nimbus",
+   "judge_email": "judge07@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.69,
+    "Execution": 4.71,
+    "Impact": 4.13,
+    "Presentation": 4.39
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Zero Vantage",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.41,
+    "Execution": 5.75,
+    "Impact": 7.25,
+    "Presentation": 7.12
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Zero Vantage",
+   "judge_email": "judge07@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.32,
+    "Execution": 7.26,
+    "Impact": 7.34,
+    "Presentation": 4.2
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Zero Vantage",
+   "judge_email": "judge09@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Federated Forge",
+   "judge_email": "judge01@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.23,
+    "Execution": 7.24,
+    "Impact": 4.99,
+    "Presentation": 3.99
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Federated Forge",
+   "judge_email": "judge02@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Federated Forge",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.38,
+    "Execution": 5.46,
+    "Impact": 7.47,
+    "Presentation": 6.64
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Signal Cascade",
+   "judge_email": "judge02@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 7.69,
+    "Execution": 5.66,
+    "Impact": 4.96,
+    "Presentation": 5.29
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Signal Cascade",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 4.42,
+    "Execution": 5.58,
+    "Impact": 5.25,
+    "Presentation": 6.65
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Signal Cascade",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 8.48,
+    "Execution": 4.15,
+    "Impact": 6.47,
+    "Presentation": 5.58
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Warm Hollow",
+   "judge_email": "judge03@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Warm Hollow",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 4.41,
+    "Execution": 4.94,
+    "Impact": 5.46,
+    "Presentation": 6.91
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Warm Hollow",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.99,
+    "Execution": 4.71,
+    "Impact": 3.89,
+    "Presentation": 7.28
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Deep Palisade",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Scope is too wide for the evidence provided.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 1.18,
+    "Execution": 5.56,
+    "Impact": 3.6,
+    "Presentation": 4.44
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Deep Palisade",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 2.42,
+    "Execution": 4.47,
+    "Impact": 5.04,
+    "Presentation": 3.86
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Deep Palisade",
+   "judge_email": "judge07@example.org",
+   "complete": true,
+   "comment": "Scope is too wide for the evidence provided.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 1.72,
+    "Execution": 2.33,
+    "Impact": 4.77,
+    "Presentation": 4.47
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Split Xenon",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 8.51,
+    "Execution": 5.95,
+    "Impact": 7.82,
+    "Presentation": 5.37
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Split Xenon",
+   "judge_email": "judge07@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.94,
+    "Execution": 8.01,
+    "Impact": 6.44,
+    "Presentation": 7.39
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Split Xenon",
+   "judge_email": "judge09@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 7.44,
+    "Execution": 6.6,
+    "Impact": 7.83,
+    "Presentation": 6.26
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Honest Relay",
+   "judge_email": "judge01@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 4.19,
+    "Execution": 2.26,
+    "Impact": 4.28,
+    "Presentation": 2.7
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Honest Relay",
+   "judge_email": "judge02@example.org",
+   "complete": true,
+   "comment": "Interesting idea, but the current build is closer to a demo than a product.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.92,
+    "Execution": 4.22,
+    "Impact": 4.21,
+    "Presentation": 6.31
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Honest Relay",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Interesting idea, but the current build is closer to a demo than a product.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.4,
+    "Execution": 4.27,
+    "Impact": 4.48,
+    "Presentation": 3.83
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Wet Mosaic",
+   "judge_email": "judge02@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Wet Mosaic",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.4,
+    "Execution": 6.31,
+    "Impact": 6.78,
+    "Presentation": 6.01
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Wet Mosaic",
+   "judge_email": "judge05@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Daylight Ember",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 4.9,
+    "Execution": 4.86,
+    "Impact": 6.03,
+    "Presentation": 6.37
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Daylight Ember",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.18,
+    "Execution": 6.81,
+    "Impact": 6.03,
+    "Presentation": 6.62
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Daylight Ember",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.38,
+    "Execution": 5.04,
+    "Impact": 5.73,
+    "Presentation": 8.21
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Short Meridian",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.44,
+    "Execution": 5.31,
+    "Impact": 4.63,
+    "Presentation": 5.19
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Short Meridian",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.84,
+    "Execution": 5.29,
+    "Impact": 3.73,
+    "Presentation": 6.83
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Short Meridian",
+   "judge_email": "judge07@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 8.04,
+    "Execution": 6.09,
+    "Impact": 4.61,
+    "Presentation": 5.59
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Double Umbra",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.69,
+    "Execution": 6.22,
+    "Impact": 6.85,
+    "Presentation": 5.67
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Double Umbra",
+   "judge_email": "judge07@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.69,
+    "Execution": 3.87,
+    "Impact": 5.97,
+    "Presentation": 3.53
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Double Umbra",
+   "judge_email": "judge09@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.82,
+    "Execution": 4.25,
+    "Impact": 5.64,
+    "Presentation": 7.67
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Frugal Ridge",
+   "judge_email": "judge01@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.41,
+    "Execution": 5.96,
+    "Impact": 5.54,
+    "Presentation": 7.57
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Frugal Ridge",
+   "judge_email": "judge02@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.58,
+    "Execution": 7.9,
+    "Impact": 7.16,
+    "Presentation": 5.79
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Frugal Ridge",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 7.19,
+    "Execution": 4.26,
+    "Impact": 6.4,
+    "Presentation": 5.34
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Static Gauge",
+   "judge_email": "judge02@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.2,
+    "Execution": 4.06,
+    "Impact": 1.9,
+    "Presentation": 3.94
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Static Gauge",
+   "judge_email": "judge03@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.41,
+    "Execution": 4.54,
+    "Impact": 6.36,
+    "Presentation": 4.33
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Static Gauge",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "The engineering is real; the framing is thin. Show the failure modes you handled.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 5.03,
+    "Execution": 4.6,
+    "Impact": 3.9,
+    "Presentation": 3.2
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Wide Orchard",
+   "judge_email": "judge03@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Wide Orchard",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 8.47,
+    "Execution": 8.33,
+    "Impact": 8.41,
+    "Presentation": 7.18
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Wide Orchard",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Strong, well-evidenced build with a clear deployment story.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 8.42,
+    "Execution": 7.65,
+    "Impact": 7.37,
+    "Presentation": 7.51
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Whole Warden",
+   "judge_email": "judge05@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 4.96,
+    "Execution": 7.23,
+    "Impact": 5.24,
+    "Presentation": 4.13
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Whole Warden",
+   "judge_email": "judge06@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.05,
+    "Execution": 5.73,
+    "Impact": 5.22,
+    "Presentation": 6.93
+   }
+  },
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "project_name": "Whole Warden",
+   "judge_email": "judge07@example.org",
+   "complete": true,
+   "comment": "Solid execution; the impact claim needs a sharper baseline to be convincing.",
+   "submitted_at": "2026-09-05T10:00:00Z",
+   "scores": {
+    "Innovation": 6.73,
+    "Execution": 5.3,
+    "Impact": 4.26,
+    "Presentation": 3.94
+   }
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 01",
+   "judge_email": "judge01@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 01",
+   "judge_email": "judge02@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 02",
+   "judge_email": "judge02@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 02",
+   "judge_email": "judge03@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 03",
+   "judge_email": "judge03@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 03",
+   "judge_email": "judge04@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 04",
+   "judge_email": "judge04@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 04",
+   "judge_email": "judge05@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 05",
+   "judge_email": "judge05@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 05",
+   "judge_email": "judge06@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 06",
+   "judge_email": "judge06@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 06",
+   "judge_email": "judge01@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 07",
+   "judge_email": "judge01@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 07",
+   "judge_email": "judge02@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 08",
+   "judge_email": "judge02@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  },
+  {
+   "event_slug": "raptors-pilot-open-hack",
+   "project_name": "Pilot Project 08",
+   "judge_email": "judge03@example.org",
+   "complete": false,
+   "comment": "",
+   "submitted_at": null,
+   "scores": {}
+  }
+ ],
+ "normalization_holdback": [
+  {
+   "event_slug": "dogfood-2026-raptors-open",
+   "exclude_latest_complete": 6
+  }
+ ]
+}

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}RUNBOOK{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="topbar">
+  <a class="brand" href="{{ url_for('gallery.home') }}">RUNBOOK</a>
+  <nav aria-label="Primary navigation">
+    <a href="{{ url_for('gallery.gallery') }}" {% if request.endpoint == 'gallery.gallery' %}aria-current="page"{% endif %}>Gallery</a>
+    <a href="{{ url_for('gallery.event_list') }}" {% if request.endpoint == 'gallery.event_list' %}aria-current="page"{% endif %}>Events</a>
+    {% if current_user %}
+      {% if viewer_role in ('organizer', 'admin') %}
+        <a href="{{ url_for('runbook.dashboard') }}" {% if request.endpoint == 'runbook.dashboard' %}aria-current="page"{% endif %}>Runbook</a>
+        <a href="{{ url_for('organizer.submissions', event_id=nav_event.id) if nav_event else '#' }}" {% if request.endpoint == 'organizer.submissions' %}aria-current="page"{% endif %}>Submissions</a>
+        <a href="{{ url_for('organizer.progress', event_id=nav_event.id) if nav_event else '#' }}" {% if request.endpoint == 'organizer.progress' %}aria-current="page"{% endif %}>Progress</a>
+        <a href="{{ url_for('organizer.results', event_id=nav_event.id) if nav_event else '#' }}" {% if request.endpoint == 'organizer.results' %}aria-current="page"{% endif %}>Results</a>
+      {% elif viewer_role == 'judge' %}
+        <a href="{{ url_for('judge.index') }}" {% if request.endpoint == 'judge.index' %}aria-current="page"{% endif %}>My queue</a>
+      {% else %}
+        <a href="{{ url_for('projects.index') }}" {% if request.endpoint == 'projects.index' %}aria-current="page"{% endif %}>My submission</a>
+      {% endif %}
+    {% endif %}
+  </nav>
+  <span class="spacer"></span>
+  {% if current_user %}
+    <span class="who">{{ current_user.display_name }}</span>
+    <span class="pill-role">{{ viewer_role }}</span>
+    <form class="inline" method="post" action="{{ url_for('auth.logout') }}">
+      <button class="btn secondary small" type="submit">Sign out</button>
+    </form>
+  {% else %}
+    <a class="btn secondary small" href="{{ url_for('auth.login') }}">Sign in</a>
+  {% endif %}
+</header>
+
+<main class="wrap" id="main-content">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <div role="status" class="flash {{ category if category in ('ok','warn','error') else 'ok' }}">{{ message }}</div>
+    {% endfor %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="foot">
+  RUNBOOK v{{ app_version }} · self-hosted · offline-capable · server time {{ now_utc | utc }}
+</footer>
+</body>
+</html>

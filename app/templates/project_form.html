@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit project' if project else 'New project' }} · RUNBOOK{% endblock %}
+{% block content %}
+<div class="split">
+  <div class="card">
+    <h1 style="margin-bottom:.2rem">{{ 'Edit project' if project else 'Create a project' }}</h1>
+    <div class="small muted">{{ event.name }} · submissions close {{ event.submission_deadline | utc }}</div>
+    {% if timing.deadline_passed %}
+      <div class="flash warn" style="margin-top:.6rem">
+        The submission window closed {{ timing.deadline_countdown }} ago. This form is read-only because the
+        server rejects post-deadline mutations with HTTP 403.
+      </div>
+    {% endif %}
+
+    {% if errors %}
+      <div class="errors" style="margin-top:.6rem">
+        <strong>Fix the following:</strong>
+        <ul>{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul>
+      </div>
+    {% endif %}
+
+    {% if project and project.status == 'draft' and not timing.deadline_passed %}
+      <div class="flash warn" style="margin-top:.6rem">This project is a <strong>draft</strong>. It is not in the
+        public gallery and no judge can see it until you submit it.</div>
+    {% endif %}
+
+    <form method="post" style="margin-top:.7rem"
+          action="{{ url_for('projects.manage', project_id=project.id) if project else url_for('projects.new', event_id=event.id) }}">
+      <div class="stack">
+        <div><label for="name">Project name</label><input id="name" name="name" type="text" required
+          value="{{ values.name if values is defined and values.name else (project.name if project else '') }}"></div>
+        <div><label for="tagline">Tagline</label><input id="tagline" name="tagline" type="text"
+          value="{{ values.tagline if values is defined and values.tagline else (project.tagline if project else '') }}"></div>
+        <div><label for="description">Description</label><textarea id="description" name="description">{{ values.description if values is defined and values.description else (project.description if project else '') }}</textarea></div>
+        <div><label for="track_id">Track</label>
+          <select id="track_id" name="track_id">
+            <option value="">— no track —</option>
+            {% for track in tracks %}
+              <option value="{{ track.id }}"
+                {% if (values is defined and values.track_id == track.id) or (project and project.track_id == track.id) %}selected{% endif %}>{{ track.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="grid three">
+          <div><label for="repo_url">Repository URL</label><input id="repo_url" name="repo_url" type="text"
+            value="{{ values.repo_url if values is defined and values.repo_url else (project.repo_url if project else '') }}"></div>
+          <div><label for="demo_url">Demo URL</label><input id="demo_url" name="demo_url" type="text"
+            value="{{ values.demo_url if values is defined and values.demo_url else (project.demo_url if project else '') }}"></div>
+          <div><label for="web_url">Other URL</label><input id="web_url" name="web_url" type="text"
+            value="{{ values.web_url if values is defined and values.web_url else (project.web_url if project else '') }}"></div>
+        </div>
+        <div class="row">
+          <button class="btn" type="submit" {% if timing.deadline_passed %}disabled{% endif %}>
+            {{ 'Save changes' if project else 'Create draft' }}</button>
+          {% if project %}
+            <a class="btn secondary" href="{{ url_for('projects.index') }}">Back</a>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+
+    {% if project and not timing.deadline_passed %}
+      <hr style="border:none;border-top:1px solid var(--line);margin:1rem 0">
+      <form method="post" action="{{ url_for('projects.submit', project_id=project.id) }}">
+        <div class="row between">
+          <div>
+            <strong>{{ 'Re-submit (already submitted)' if project.status == 'submitted' else 'Submit for judging' }}</strong>
+            <div class="small muted">Submitting makes the project public and judgeable. You can keep editing until
+              the deadline.</div>
+          </div>
+          <button class="btn" type="submit">{{ 'Re-submit' if project.status == 'submitted' else 'Submit' }}</button>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+
+  <div>
+    <div class="card">
+      <h3>What happens on submit</h3>
+      <ul class="small muted">
+        <li>The project becomes visible in the public gallery.</li>
+        <li>The organizer can assign judges to it (round-robin within its track).</li>
+        <li>Only its own team members can still edit it, and only until the deadline.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Rules enforced by the database</h3>
+      <ul class="small muted">
+        <li>One project per team per event — <span class="mono">UNIQUE(event_id, team_id)</span>.</li>
+        <li>One team per participant per event — <span class="mono">UNIQUE(event_id, user_id)</span> on team membership.</li>
+        <li>Deadline checks run server-side against UTC.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

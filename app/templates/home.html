@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}RUNBOOK · hackathon submissions and judging{% endblock %}
+{% block content %}
+{% if not event %}
+  <div class="card"><h1>RUNBOOK</h1><p class="muted">No events are configured yet.</p></div>
+{% else %}
+<div class="banner public-hero">
+  <div class="eyebrow">RUNBOOK · Hackathon operations</div>
+  <h1>{{ event.name }}</h1>
+  <p class="hero-subtitle">Build. Submit. Judge.</p>
+  <div class="small" style="color:#9fb0c3">{{ event.tagline }}</div>
+  <div class="row" style="margin-top:.5rem">
+    <span class="chip">{{ phase }}</span>
+    <span class="chip">Submissions close {{ event.submission_deadline | utc }}</span>
+    <span class="chip">Judging {{ event.judging_starts_at | utc }} → {{ event.judging_ends_at | utc }}</span>
+  </div>
+</div>
+
+<div class="grid two">
+  <div class="card">
+    <h3>What this is</h3>
+    <p class="muted">A self-hosted hackathon submission and judging portal. Participants form teams and submit
+      projects, judges score them against a weighted rubric, and organizers get a live operational view of
+      the event: what is complete, what is active, what is blocked, and what became stale.</p>
+    <div class="kpi">
+      <div><div class="v">{{ counts.submitted }}</div><div class="k">submitted projects</div></div>
+      <div><div class="v">{{ counts.teams }}</div><div class="k">teams</div></div>
+      <div><div class="v">{{ counts.participants }}</div><div class="k">participants</div></div>
+      <div><div class="v">{{ counts.tracks }}</div><div class="k">tracks</div></div>
+    </div>
+    <div class="row" style="margin-top:.7rem">
+      <a class="btn" href="{{ url_for('gallery.gallery') }}">Browse the gallery</a>
+      <a class="btn secondary" href="{{ url_for('auth.login') }}">Sign in</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Tracks &amp; prizes</h3>
+    <table>
+      <tbody>
+      {% for track in tracks %}
+        <tr><td>{{ track.name }}<div class="small muted">{{ track.description }}</div></td>
+            <td class="num small">
+              {% for prize in prizes if prize.track_id == track.id %}{{ prize.name }}<br>{% endfor %}
+            </td></tr>
+      {% endfor %}
+      {% for prize in prizes if not prize.track_id %}
+        <tr><td><strong>{{ prize.name }}</strong><div class="small muted">Event-wide</div></td><td class="num small"></td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% if projects %}
+<div class="card">
+  <div class="row between"><h3 style="margin:0">Recent submissions</h3>
+    <a class="btn secondary small" href="{{ url_for('gallery.gallery') }}">All {{ counts.submitted }}</a></div>
+  <table>
+    <thead><tr><th>Project</th><th>Team</th><th>Track</th></tr></thead>
+    <tbody>
+    {% for project in projects %}
+      <tr>
+        <td><a href="{{ url_for('gallery.project_detail', project_id=project.id) }}">{{ project.name }}</a>
+          <div class="small muted">{{ project.tagline }}</div></td>
+        <td class="small">{{ project.team_name }}</td>
+        <td><span class="tag track">{{ project.track_name or '—' }}</span></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}

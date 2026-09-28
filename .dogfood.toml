@@ -1,0 +1,23 @@
+# DOGFOOD 2026 acceptance contract. Only implemented/verified tiers claimed.
+# Auth values are Cookie headers pointing to opaque SERVER-SIDE demo sessions;
+# they are not fake role headers or claims accepted from clients.
+[portal]
+base_url = "http://localhost:8080"
+
+[tiers]
+claimed = ["T1", "T2"]
+pitch = "RUNBOOK: a self-hosted submission and judging portal with database-derived operational states and stale-normalization detection."
+
+[auth]
+organizer = "Cookie: runbook_session=demo-session-organizer-3f9c1a7d5b2e"
+judge_a = "Cookie: runbook_session=demo-session-judge-a-1d8f5c30b7a4"
+judge_b = "Cookie: runbook_session=demo-session-judge-b-9a2b6e04c1f7"
+participant = "Cookie: runbook_session=demo-session-participant-5e7d2a8c40b1"
+
+[routes]
+gallery = "/gallery"
+submit = "/api/projects"
+# This review belongs to judge_a; judge_b requesting the same URL gets 403.
+judge_scores = "/api/judging/reviews/1"
+peer_scores = "/api/judging/reviews/1"
+csv_export = "/api/events/1/export.csv"

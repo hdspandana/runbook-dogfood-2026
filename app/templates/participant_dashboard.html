@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}My submission · RUNBOOK{% endblock %}
+{% block content %}
+<h1>My submission</h1>
+
+{% if not context %}
+  <div class="empty">
+    You are not on a team in any event yet.
+    {% if open_events %}Create a team below to get started.{% endif %}
+  </div>
+{% endif %}
+
+{% for item in context %}
+  {% set event = item.event %}
+  {% set timing = item.timing %}
+  <div class="card">
+    <div class="row between">
+      <div>
+        <h3 style="margin:0">{{ event.name }}</h3>
+        <div class="small muted">{{ timing.phase_label }} ·
+          {% if timing.deadline_passed %}submissions closed {{ timing.deadline_countdown }} ago at {{ timing.deadline_display }}
+          {% else %}submissions close in {{ timing.deadline_countdown }} ({{ timing.deadline_display }}){% endif %}
+        </div>
+      </div>
+      {% if timing.deadline_passed %}<span class="status COMPLETE">LOCKED</span>{% else %}<span class="status ACTIVE">OPEN</span>{% endif %}
+    </div>
+
+    <table style="margin-top:.6rem">
+      <tbody>
+        <tr><td>Team</td><td><a href="{{ url_for('teams.detail', team_id=item.team.id) }}">{{ item.team.name }}</a>
+          {% if item.is_lead %}<span class="tag">lead</span>{% endif %}</td></tr>
+        <tr><td>Project</td><td>
+          {% if item.project %}
+            {{ item.project.name }} <span class="tag {{ item.project.status }}">{{ item.project.status }}</span>
+          {% else %}<span class="muted">not created yet</span>{% endif %}
+        </td></tr>
+        {% if item.project %}
+          <tr><td>Submitted at</td><td>{{ item.project.submitted_at | utc if item.project.submitted_at else '—' }}</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+
+    <div class="row" style="margin-top:.6rem">
+      {% if not item.project %}
+        <a class="btn" href="{{ url_for('projects.new', event_id=event.id) }}">Create project</a>
+      {% else %}
+        <a class="btn" href="{{ url_for('projects.manage', project_id=item.project.id) }}">
+          {{ 'View project (locked)' if timing.deadline_passed else 'Edit project' }}</a>
+        {% if item.project.status == 'draft' %}
+          <form class="inline" method="post" action="{{ url_for('projects.submit', project_id=item.project.id) }}">
+            <button class="btn secondary" type="submit" {% if timing.deadline_passed %}disabled{% endif %}>Submit now</button>
+          </form>
+        {% endif %}
+        {% if item.project.status == 'submitted' %}
+          <a class="btn secondary" href="{{ url_for('gallery.project_detail', project_id=item.project.id) }}">View public page</a>
+        {% endif %}
+      {% endif %}
+    </div>
+    {% if timing.deadline_passed %}
+      <div class="small muted" style="margin-top:.5rem">
+        The deadline has passed. Participant-side changes are rejected by the server with 403 — a submitted
+        project can no longer be edited or (re)submitted.
+      </div>
+    {% endif %}
+  </div>
+{% endfor %}
+
+{% if open_events %}
+  <div class="card">
+    <h3>Join another event</h3>
+    <table>
+      <thead><tr><th>Event</th><th>Submissions close</th><th></th></tr></thead>
+      <tbody>
+      {% for row in open_events %}
+        <tr>
+          <td>{{ row.event.name }}</td>
+          <td class="small">{{ row.event.submission_deadline | utc }} (in {{ row.timing.deadline_countdown }})</td>
+          <td>
+            <form class="inline" method="post" action="{{ url_for('teams.create') }}">
+              <input type="hidden" name="event_id" value="{{ row.event.id }}">
+              <input type="text" name="name" placeholder="Team name" style="width:12rem;display:inline-block">
+              <button class="btn small" type="submit">Create team</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <p class="small muted">Teammates join through the team's invite link, which contains a 192-bit random token.</p>
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Judging progress · {{ event.name }}{% endblock %}
+{% block content %}
+<h1>Judging progress</h1>
+<div class="small muted">{{ event.name }} · derived from the database on every request; nothing on this page is stored.</div>
+
+<div class="card">
+  <div class="kpi">
+    <div><div class="v">{{ progress.complete_reviews }}</div><div class="k">reviews complete</div></div>
+    <div><div class="v">{{ progress.required_reviews }}</div><div class="k">required</div></div>
+    <div><div class="v">{{ progress.pending_reviews }}</div><div class="k">remaining</div></div>
+    <div><div class="v">{{ progress.percent }}%</div><div class="k">complete</div></div>
+  </div>
+  <div class="bar" style="margin:.7rem 0"><span style="width: {{ progress.percent }}%"></span></div>
+
+</div>
+
+<div class="grid two">
+  <div class="card">
+    <h3>Per track</h3>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Track</th><th class="num">Complete</th><th class="num">Required</th><th class="num">Remaining</th></tr></thead>
+      <tbody>
+      {% for track in progress.by_track %}
+        <tr><td>{{ track.track }}</td><td class="num">{{ track.complete }}</td>
+            <td class="num">{{ track.required }}</td><td class="num">{{ track.remaining }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table></div>
+  </div>
+  <div class="card">
+    <h3>Assignment health</h3>
+    {% if progress.unassigned_projects or progress.invalid_track_assignments or progress.duplicate_assignments %}<p class="flash error">Assignment coverage needs attention. <a href="{{ url_for('organizer.assignments', event_id=event.id) }}">Fix assignments →</a></p>{% else %}<p class="flash ok">All submitted projects have valid assignment coverage.</p>{% endif %}
+    <div class="table-scroll"><table><tbody>
+      <tr><td>Submitted projects with no assignment</td><td class="num">{{ progress.unassigned_projects|length }}</td></tr>
+      <tr><td>Assignments in the wrong track</td><td class="num">{{ progress.invalid_track_assignments }}</td></tr>
+      <tr><td>Duplicate assignments</td><td class="num">{{ progress.duplicate_assignments }}</td></tr>
+      <tr><td>Judges with zero assignments</td><td class="num">{{ progress.judges_without_assignments|length }}</td></tr>
+    </tbody></table></div>
+    <div class="small muted" style="margin-top:.5rem">
+      <strong>Completion policy.</strong> Judging is complete when every submitted project has at least one
+      assignment <em>and</em> every assignment has a completed review. Counting only the reviews that happen to
+      exist would let an unassigned project look finished.
+    </div>
+    {% if progress.unassigned_projects %}
+      <ul class="small">{% for project in progress.unassigned_projects %}<li>{{ project.name }}</li>{% endfor %}</ul>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card">
+  <div class="row">
+    <a class="btn secondary" href="{{ url_for('api.progress', event_id=event.id) }}">Progress as JSON</a>
+    <a class="btn secondary" href="{{ url_for('organizer.assignments', event_id=event.id) }}">Assignments</a>
+    <a class="btn secondary" href="{{ url_for('organizer.results', event_id=event.id) }}">Normalization &amp; results</a>
+    <a class="btn secondary" href="{{ url_for('runbook.dashboard', event=event.id) }}">Runbook</a>
+  </div>
+</div>
+{% endblock %}

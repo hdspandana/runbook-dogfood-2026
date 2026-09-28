@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Join {{ team.name }} · RUNBOOK{% endblock %}
+{% block content %}
+<div class="narrow">
+  <div class="card">
+    <h1>Join “{{ team.name }}”</h1>
+    <div class="small muted">{{ event.name }}</div>
+    {% if already %}
+      <div class="flash ok" style="margin-top:.6rem">You are already a member of this team.</div>
+      <a class="btn" href="{{ url_for('teams.detail', team_id=team.id) }}">Open the team</a>
+    {% elif conflict %}
+      <div class="flash error" style="margin-top:.6rem">
+        You already belong to a different team in this event. A participant can belong to at most one team
+        per event, so this join was not applied.
+      </div>
+    {% else %}
+      <p style="margin-top:.6rem">Joining adds you to this team’s project for the event. This is a real change,
+        so it needs a POST — a GET on this link never mutates membership.</p>
+      <form method="post">
+        <button class="btn" type="submit">Join team</button>
+      </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

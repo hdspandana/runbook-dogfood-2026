@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}My queue · RUNBOOK{% endblock %}
+{% block content %}
+<div class="row between">
+  <div><div class="eyebrow">Judging workstation</div><h1>My review queue</h1></div>
+  <form method="get" action="{{ url_for('judge.index') }}" class="row">
+    <label for="queue-event">Event</label><select id="queue-event" name="event" onchange="this.form.submit()" style="width:auto">
+      {% for ev in events %}
+        <option value="{{ ev.id }}" {% if event and ev.id == event.id %}selected{% endif %}>{{ ev.name }}</option>
+      {% endfor %}
+    </select>
+    <noscript><button class="btn small secondary" type="submit">Switch</button></noscript>
+  </form>
+</div>
+
+{% if not event %}
+  <div class="empty">You have no assignments in any event.</div>
+{% else %}
+  <p class="small muted">
+    {% if scoring_open %}Scoring is open; the window closes {{ window_end }}.
+    {% else %}Scoring is currently locked (outside the judging window {{ event.judging_starts_at | utc }} → {{ window_end }}).{% endif %}
+  </p>
+
+  {% if stats %}
+    <div class="card tight">
+      <div class="kpi">
+        <div><div class="v">{{ stats.complete }} / {{ stats.assigned }}</div><div class="k">reviews complete</div></div>
+        <div><div class="v">{{ stats.remaining }}</div><div class="k">remaining</div></div>
+        <div><div class="v">{{ stats.percent }}%</div><div class="k">of your queue</div></div>
+      </div>
+      <div class="bar" style="margin-top:.5rem"><span style="width: {{ stats.percent }}%"></span></div>
+      <div class="small muted" style="margin-top:.4rem">
+        Your track scope: {% for track in track_scope %}{{ track.name }}{% if not loop.last %}, {% endif %}{% endfor %}.
+        You can only open projects and track statistics inside this scope.
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="card">
+    <h2>Needs review <span class="muted">{{ stats.remaining }}</span></h2>
+    {% if not stats.remaining %}<p class="empty">All assigned reviews are complete.</p>{% endif %}
+    <div class="table-scroll"><table>
+      <thead><tr><th>#</th><th>Project</th><th>Track</th><th>Status</th><th class="num">Raw total</th><th></th></tr></thead>
+      <tbody>
+      {% for row in queue if row.review_status != 'complete' %}
+        <tr>
+          <td class="small muted">{{ row.project_id }}</td>
+          <td><strong>{{ row.project_name }}</strong><div class="small muted">{{ row.tagline }}</div></td>
+          <td><span class="tag track">{{ row.track_name or '—' }}</span></td>
+          <td>
+            {% if row.review_status == 'complete' %}<span class="status COMPLETE">COMPLETE</span>
+            {% else %}<span class="status ACTIVE">PENDING</span>{% endif %}
+          </td>
+          <td class="num">{% if row.raw_total is not none %}{{ '%.2f'|format(row.raw_total) }}{% else %}—{% endif %}</td>
+          <td><a class="btn small" href="{{ url_for('judge.review', project_id=row.project_id) }}">
+            Review →</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table></div>
+  </div>
+  {% if stats.complete %}
+  <div class="card quiet-card">
+    <h2>Completed <span class="muted">{{ stats.complete }}</span></h2>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Project</th><th>Track</th><th class="num">Raw total</th><th>Review</th></tr></thead>
+      <tbody>{% for row in queue if row.review_status == 'complete' %}
+      <tr><td>{{ row.project_name }}</td><td>{{ row.track_name }}</td>
+          <td class="num">{{ '%.2f'|format(row.raw_total) if row.raw_total is not none else '—' }}</td>
+          <td><a href="{{ url_for('judge.review', project_id=row.project_id) }}">Open review →</a></td></tr>
+      {% endfor %}</tbody>
+    </table></div>
+  </div>
+  {% endif %}
+
+  <div class="card">
+    <h3>Privacy</h3>
+    <p class="small muted">You can read only your own scores. There is no endpoint that returns another judge's
+      review to you, including aggregate ones: the track statistics above count <em>your</em> assignments only.</p>
+  </div>
+{% endif %}
+{% endblock %}

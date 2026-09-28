@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Gallery · RUNBOOK{% endblock %}
+{% block content %}
+<div class="page-header"><div class="eyebrow">Discover submitted work</div><h1>Public gallery</h1></div>
+{% if not event %}
+  <div class="empty">No events yet.</div>
+{% else %}
+<p class="muted">Submitted projects from <strong>{{ event.name }}</strong>. Drafts are not listed, and no
+  judging information (scores, comments, judges, assignments, normalization) is exposed here.</p>
+
+<form method="get" action="{{ url_for('gallery.gallery') }}" class="card tight">
+  <div class="row">
+    <label class="sr-only" for="gallery-query">Search projects, teams or tracks</label><input id="gallery-query" type="search" name="q" value="{{ search }}" placeholder="Search projects, teams, tracks…" style="flex:1">
+    <label class="sr-only" for="gallery-track">Filter by track</label><select id="gallery-track" name="track" style="width:auto">
+      <option value="">All tracks</option>
+      {% for track in tracks %}
+        <option value="{{ track.id }}" {% if track_id == track.id %}selected{% endif %}>{{ track.name }}</option>
+      {% endfor %}
+    </select>
+    <input type="hidden" name="event" value="{{ event.id }}">
+    <button class="btn" type="submit">Search</button>
+    {% if search or track_id %}<a class="btn secondary" href="{{ url_for('gallery.gallery', event=event.id) }}">Clear</a>{% endif %}
+  </div>
+</form>
+
+<p class="small muted">{{ total }} project(s).</p>
+
+{% if not projects %}
+  <div class="empty">No submitted projects match these filters. <a href="{{ url_for('gallery.gallery', event=event.id) }}">Clear filters →</a></div>
+{% endif %}
+
+<div class="grid three">
+  {% for project in projects %}
+    <article class="card gallery-card">
+      <div class="row between">
+        <span class="tag track">{{ project.track_name or 'No track' }}</span>
+        <span class="small muted">#{{ project.id }}</span>
+      </div>
+      <h3 style="margin:.4rem 0 .2rem"><a href="{{ url_for('gallery.project_detail', project_id=project.id) }}">{{ project.name }}</a></h3>
+      <div class="small muted">{{ project.tagline }}</div>
+      <p class="small" style="margin:.5rem 0 .3rem">{{ project.description[:160] }}{% if project.description|length > 160 %}…{% endif %}</p>
+      <div class="small muted">Team: {{ project.team_name }}</div>
+      <div class="row" style="margin-top:.4rem">
+        <a class="small" href="{{ url_for('gallery.project_detail', project_id=project.id) }}">View project →</a>
+        {% if project.repo_url %}<a class="small" href="{{ project.repo_url }}" rel="noreferrer noopener" target="_blank">Repo</a>{% endif %}
+        {% if project.demo_url %}<a class="small" href="{{ project.demo_url }}" rel="noreferrer noopener" target="_blank">Demo</a>{% endif %}
+        {% if project.web_url %}<a class="small" href="{{ project.web_url }}" rel="noreferrer noopener" target="_blank">Site</a>{% endif %}
+      </div>
+    </article>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

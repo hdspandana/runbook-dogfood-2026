@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ code }} · RUNBOOK{% endblock %}
+{% block content %}
+<div class="narrow">
+  <div class="card">
+    <h1>{{ code }}</h1>
+    <p>{{ message }}</p>
+    <p class="small muted">If you expected to be allowed here, check the role of the account you are signed in
+      with — authorization is enforced on the server for every protected resource, not by hiding links.</p>
+    <div class="row">
+      <a class="btn secondary" href="{{ url_for('gallery.home') }}">Home</a>
+      <a class="btn secondary" href="{{ url_for('auth.login') }}">Sign in</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

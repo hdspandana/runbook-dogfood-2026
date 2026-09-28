@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Judge invite · RUNBOOK{% endblock %}
+{% block content %}
+<div class="narrow">
+  <div class="card">
+    <h1>Judge invitation</h1>
+    <p>You have been invited to judge <strong>{{ event.name }}</strong>.</p>
+    <table><tbody>
+      <tr><td>Invited email</td><td class="mono">{{ invite.email }}</td></tr>
+      <tr><td>Track scope</td><td>{{ track.name if track else 'all tracks' }}</td></tr>
+      <tr><td>Judging window</td><td>{{ event.judging_starts_at | utc }} → {{ event.judging_ends_at | utc }}</td></tr>
+      <tr><td>Acceptance</td><td>{{ invite.accepted_at | utc if invite.accepted_at else 'not yet accepted' }}</td></tr>
+    </tbody></table>
+
+    {% if error %}<div class="flash error" style="margin-top:.6rem">{{ error }}</div>{% endif %}
+
+    {% if current_user %}
+      <form method="post" style="margin-top:.7rem">
+        <button class="btn" type="submit">Accept invite</button>
+      </form>
+      <p class="small muted">You are signed in as {{ current_user.display_name }} ({{ current_user.role }}).</p>
+    {% elif has_account %}
+      <div class="flash warn" style="margin-top:.6rem">An account with this email already exists. Sign in first,
+        then reopen this link to accept.</div>
+      <a class="btn" href="{{ url_for('auth.login', next=request.path) }}">Sign in</a>
+    {% else %}
+      <form method="post" style="margin-top:.7rem">
+        <div class="stack">
+          <div><label for="display_name">Display name</label><input id="display_name" name="display_name" type="text"></div>
+          <div><label for="password">Choose a password (min 8 characters)</label><input id="password" name="password" type="password" required></div>
+          <button class="btn" type="submit">Create judge account and accept</button>
+        </div>
+      </form>
+      <p class="small muted">No email is sent. This link <em>is</em> the invitation — it contains a 192-bit random token.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
