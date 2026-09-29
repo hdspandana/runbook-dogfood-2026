@@ -173,7 +173,7 @@ details.evidence ul { margin: .35rem 0 0; padding-left: 1.1rem; font-size: .85re
 
 .overview { display: flex; gap: .5rem; flex-wrap: wrap; }
 .chip {
-  border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: .2rem .65rem; font-size: .8rem;
+  border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 999px; padding: .2rem .65rem; font-size: .8rem;
 }
 .chip b { font-variant-numeric: tabular-nums; }
 
@@ -256,3 +256,5 @@ td,th { overflow-wrap:anywhere; }
    can enlarge its grid track and force the entire mobile page to scroll. */
 .grid > *, .split > *, .grid.two > *, .grid.three > * { min-width: 0; }
 .table-scroll { width: 100%; }
+
+
