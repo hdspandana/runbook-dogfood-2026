@@ -53,6 +53,10 @@ def client_for(test_app, user_id):
         token = auth_service.create_session(user_id, "pytest")
     client = test_app.test_client()
     client.set_cookie("runbook_session", token)
+    client.get("/login")
+    with client.session_transaction() as flask_session:
+        csrf = flask_session["_csrf_token"]
+    client.csrf_token = csrf
     return client
 
 
@@ -74,9 +78,9 @@ def scores_payload(test_app, value=7.0):
 def submit(test_app, client, project_id, **extra):
     data = scores_payload(test_app)
     data["intent"] = "submit"
+    data["csrf_token"] = client.csrf_token
     data.update(extra)
     return client.post(f"/judge/projects/{project_id}", data=data)
-
 
 def complete_directly(test_app, review_id):
     with test_app.app_context():
@@ -129,6 +133,7 @@ def test_save_draft_does_not_advance(pilot):
     client = client_for(pilot, PILOT_JUDGE)
     data = scores_payload(pilot)
     data["intent"] = "save"
+    data["csrf_token"] = client.csrf_token
     response = client.post(f"/judge/projects/{rows[0]['project_id']}", data=data)
     assert response.status_code == 302
     assert response.headers["Location"].endswith("/judge?event=2")
