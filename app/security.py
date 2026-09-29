@@ -13,8 +13,12 @@ denial look like a success to a checker.
 
 from __future__ import annotations
 
+import hmac
+import secrets
 from functools import wraps
 from typing import Any, Optional
+
+from flask import g, request, session
 
 from flask import g, redirect, request, url_for
 
@@ -46,7 +50,27 @@ def current_user():
 def is_authenticated() -> bool:
     return load_current_user() is not None
 
+# --------------------------------------------------------------------------
+# CSRF protection
+# --------------------------------------------------------------------------
+def csrf_token() -> str:
+    """Return the per-session CSRF token, creating it when necessary."""
+    token = session.get("_csrf_token")
+    if not token:
+        token = secrets.token_urlsafe(32)
+        session["_csrf_token"] = token
+    return token
 
+
+def validate_csrf() -> bool:
+    """Validate the CSRF token submitted by a browser HTML form."""
+    expected = session.get("_csrf_token")
+    supplied = request.form.get("csrf_token", "")
+
+    if not expected or not supplied:
+        return False
+
+    return hmac.compare_digest(expected, supplied)
 def roles_of(user) -> set[str]:
     if user is None:
         return set()
@@ -261,3 +285,4 @@ def judging_open(event, at=None) -> bool:
     start = parse_iso(event["judging_starts_at"])
     end = parse_iso(event["judging_ends_at"])
     return (start is None or reference >= start) and (end is None or reference < end)
+

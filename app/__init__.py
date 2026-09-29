@@ -19,7 +19,7 @@ from flask import Flask, g, render_template, request, session
 
 from . import db
 from .config import Config
-from .security import current_user
+from .security import current_user, csrf_token, validate_csrf
 from .util import json_error, now_utc, pretty_utc
 
 __version__ = "1.0.0"
@@ -144,6 +144,26 @@ def _register_context(app: Flask) -> None:
     def _touch():  # pragma: no cover - trivial
         g.request_started = now_utc()
 
+    @app.before_request
+    def _csrf_protect():
+        """Protect browser form POSTs without interfering with /api/* clients."""
+        if request.method != "POST":
+            return None
+
+        if request.path.startswith("/api/"):
+            return None
+
+        if not validate_csrf():
+            return (
+                render_template(
+                    "error.html",
+                    code=403,
+                    message="Invalid or missing CSRF token.",
+                ),
+                403,
+            )
+
+        return None
     @app.after_request
     def _cookie_policy(response):
         """Apply the same Secure/SameSite policy to Flask's own flash cookie.
@@ -185,6 +205,7 @@ def _register_context(app: Flask) -> None:
             "nav_event": events_service.primary_event(),
             "app_version": __version__,
             "now_utc": now_utc(),
+            "csrf_token": csrf_token,
         }
 
     app.jinja_env.filters["utc"] = pretty_utc
