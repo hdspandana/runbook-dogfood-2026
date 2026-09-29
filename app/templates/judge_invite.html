@@ -16,6 +16,7 @@
 
     {% if current_user %}
       <form method="post" style="margin-top:.7rem">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <button class="btn" type="submit">Accept invite</button>
       </form>
       <p class="small muted">You are signed in as {{ current_user.display_name }} ({{ current_user.role }}).</p>

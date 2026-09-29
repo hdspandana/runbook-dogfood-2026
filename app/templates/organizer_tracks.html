@@ -19,6 +19,7 @@
           <td class="num">{{ track_counts.get(track.id, 0) }}</td>
           <td>
             <form class="inline" method="post" action="{{ url_for('organizer.track_delete', event_id=event.id, track_id=track.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <button class="btn small danger" type="submit">Remove</button>
             </form>
           </td>

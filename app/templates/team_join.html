@@ -17,6 +17,7 @@
       <p style="margin-top:.6rem">Joining adds you to this team’s project for the event. This is a real change,
         so it needs a POST — a GET on this link never mutates membership.</p>
       <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <button class="btn" type="submit">Join team</button>
       </form>
     {% endif %}

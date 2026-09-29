@@ -48,6 +48,7 @@
           {{ 'View project (locked)' if timing.deadline_passed else 'Edit project' }}</a>
         {% if item.project.status == 'draft' %}
           <form class="inline" method="post" action="{{ url_for('projects.submit', project_id=item.project.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button class="btn secondary" type="submit" {% if timing.deadline_passed %}disabled{% endif %}>Submit now</button>
           </form>
         {% endif %}
@@ -77,6 +78,7 @@
           <td class="small">{{ row.event.submission_deadline | utc }} (in {{ row.timing.deadline_countdown }})</td>
           <td>
             <form class="inline" method="post" action="{{ url_for('teams.create') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <input type="hidden" name="event_id" value="{{ row.event.id }}">
               <input type="text" name="name" placeholder="Team name" style="width:12rem;display:inline-block">
               <button class="btn small" type="submit">Create team</button>

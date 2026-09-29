@@ -26,6 +26,7 @@
 
     <form method="post" style="margin-top:.7rem"
           action="{{ url_for('projects.manage', project_id=project.id) if project else url_for('projects.new', event_id=event.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="stack">
         <div><label for="name">Project name</label><input id="name" name="name" type="text" required
           value="{{ values.name if values is defined and values.name else (project.name if project else '') }}"></div>
@@ -62,6 +63,7 @@
     {% if project and not timing.deadline_passed %}
       <hr style="border:none;border-top:1px solid var(--line);margin:1rem 0">
       <form method="post" action="{{ url_for('projects.submit', project_id=project.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="row between">
           <div>
             <strong>{{ 'Re-submit (already submitted)' if project.status == 'submitted' else 'Submit for judging' }}</strong>

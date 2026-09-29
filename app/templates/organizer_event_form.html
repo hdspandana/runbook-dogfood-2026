@@ -13,6 +13,7 @@
   {% endif %}
 
   <form method="post" class="card">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="stack">
       <div><label for="name">Name</label><input id="name" name="name" required value="{{ values.name or '' }}"></div>
       <div><label for="slug">Slug</label><input id="slug" name="slug" required value="{{ values.slug or '' }}"></div>

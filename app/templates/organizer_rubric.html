@@ -21,6 +21,7 @@
 </div>
 
 <form method="post" class="card">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <div class="table-scroll"><table>
     <thead>
       <tr><th>Criterion</th><th class="num">Weight %</th><th class="num">Max score</th><th></th></tr>

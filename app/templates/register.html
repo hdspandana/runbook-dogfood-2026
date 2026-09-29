@@ -8,6 +8,7 @@
     deployment.</p>
   {% if error %}<div class="flash error">{{ error }}</div>{% endif %}
   <form method="post" action="{{ url_for('auth.register') }}" class="card">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="stack">
       <div><label for="display_name">Display name</label><input id="display_name" type="text" name="display_name" value="{{ display_name or '' }}"></div>
       <div><label for="email">Email</label><input id="email" type="email" name="email" value="{{ email or '' }}" required></div>

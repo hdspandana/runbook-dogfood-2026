@@ -40,6 +40,7 @@
       computed by the server, not by the browser.</div>
 
     <form method="post" style="margin-top:.7rem">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="table-scroll"><table>
         <thead>
           <tr><th>Criterion</th><th class="num">Score</th><th class="num">Weight</th><th class="num">Contribution</th></tr>

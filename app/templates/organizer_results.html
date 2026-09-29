@@ -1,15 +1,28 @@
 {% extends "base.html" %}
 {% block title %}Normalization &amp; results · {{ event.name }}{% endblock %}
 {% block content %}
-<div class="page-header"><div class="eyebrow">Organizer · result integrity</div><h1>Normalization &amp; results</h1></div>
-<div class="small muted">{{ event.name }} · <a href="{{ url_for('organizer.progress', event_id=event.id) }}">Progress</a>
-  · <a href="{{ url_for('runbook.dashboard', event=event.id) }}">Runbook</a></div>
+
+<div class="page-header">
+  <div class="eyebrow">Organizer · result integrity</div>
+  <h1>Normalization &amp; results</h1>
+</div>
+
+<div class="small muted">
+  {{ event.name }} ·
+  <a href="{{ url_for('organizer.progress', event_id=event.id) }}">Progress</a>
+  ·
+  <a href="{{ url_for('runbook.dashboard', event=event.id) }}">Runbook</a>
+</div>
 
 <div class="card freshness-panel {{ 'STALE' if freshness.state == 'stale' else 'COMPLETE' if freshness.state == 'current' else 'UPCOMING' }}">
+
   <div class="row between">
+
     <div>
       <span class="status {{ 'STALE' if freshness.state == 'stale' else ('COMPLETE' if freshness.state == 'current' else 'UPCOMING') }}">
-        {{ freshness.state|upper }}</span>
+        {{ freshness.state|upper }}
+      </span>
+
       <h3 style="margin:.5rem 0 .1rem">
         {% if freshness.state == 'never_run' %}
           No normalized result has been produced yet
@@ -19,133 +32,366 @@
           Last normalization: {{ freshness.stored_review_count }} reviews · current: {{ freshness.current_review_count }}
         {% endif %}
       </h3>
+
       <div class="small muted">
-        {% if freshness.stored_at %}Produced {{ freshness.stored_at | utc }}.{% endif %}
+        {% if freshness.stored_at %}
+          Produced {{ freshness.stored_at | utc }}.
+        {% endif %}
+
         {% if freshness.state == 'stale' %}
-          {% if freshness.delta %}{{ freshness.delta }} completed review(s) difference since then{% else %}Result inputs changed without changing the completed review count{% endif %}{% if freshness.rubric_changed %}; the rubric changed{% endif %}.
+          {% if freshness.delta %}
+            {{ freshness.delta }} completed review(s) difference since then
+          {% else %}
+            Result inputs changed without changing the completed review count
+          {% endif %}
+
+          {% if freshness.rubric_changed %}
+            ; the rubric changed
+          {% endif %}.
+
           The persisted normalization is out of date; publication is blocked until coverage is complete and normalization is current.
         {% endif %}
       </div>
     </div>
+
     <div class="row">
+
+      <!-- Run / re-run normalization -->
       <form method="post">
-        <button class="btn" type="submit">{{ 'Run normalization' if freshness.state == 'never_run' else 'Re-run normalization' }}</button>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <button class="btn" type="submit">
+          {{ 'Run normalization' if freshness.state == 'never_run' else 'Re-run normalization' }}
+        </button>
       </form>
+
+      <!-- Publish results -->
       <form method="post" action="{{ url_for('organizer.publish', event_id=event.id) }}">
-        <button class="btn secondary" type="submit" {% if not progress.all_reviews_complete or freshness.state != 'current' %}disabled aria-describedby="publish-help"{% endif %}>Publish results</button>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <button
+          class="btn secondary"
+          type="submit"
+          {% if not progress.all_reviews_complete or freshness.state != 'current' %}
+            disabled
+            aria-describedby="publish-help"
+          {% endif %}
+        >
+          Publish results
+        </button>
       </form>
+
     </div>
   </div>
 
-  <a class="btn secondary" href="{{ url_for('exports.export_csv', event_id=event.id) }}">Download operational CSV →</a>
+  <a class="btn secondary" href="{{ url_for('exports.export_csv', event_id=event.id) }}">
+    Download operational CSV →
+  </a>
+
   <p id="publish-help" class="small muted" style="margin-top:.7rem">
-    {% if not progress.all_reviews_complete %}{{ progress.pending_reviews }} required review(s) remain{% if progress.unassigned_projects %}; {{ progress.unassigned_projects|length }} project(s) unassigned{% endif %}. Finish judging before publishing.
-    {% elif freshness.state == 'never_run' %}Run normalization before publishing.
-    {% elif freshness.state == 'stale' %}Re-run normalization before publishing; the snapshot is stale.
-    {% elif publication_state == 'stale' %}A previous publication is stale. Publish the current snapshot again.
-    {% elif publication_state == 'current' %}The published snapshot is current. Operational CSV is still available.
-    {% else %}All required reviews are complete. The current snapshot is ready to publish.{% endif %}
+    {% if not progress.all_reviews_complete %}
+      {{ progress.pending_reviews }} required review(s) remain
+      {% if progress.unassigned_projects %}
+        ; {{ progress.unassigned_projects|length }} project(s) unassigned
+      {% endif %}.
+      Finish judging before publishing.
+
+    {% elif freshness.state == 'never_run' %}
+      Run normalization before publishing.
+
+    {% elif freshness.state == 'stale' %}
+      Re-run normalization before publishing; the snapshot is stale.
+
+    {% elif publication_state == 'stale' %}
+      A previous publication is stale. Publish the current snapshot again.
+
+    {% elif publication_state == 'current' %}
+      The published snapshot is current. Operational CSV is still available.
+
+    {% else %}
+      All required reviews are complete. The current snapshot is ready to publish.
+    {% endif %}
   </p>
-  <div class="table-scroll"><table style="margin-top:.8rem">
-    <tbody>
-      <tr><td>Completed reviews (now)</td><td class="num">{{ freshness.current_review_count }}</td></tr>
-      <tr><td>Pending reviews excluded</td><td class="num">{{ freshness.current_pending_count }}</td></tr>
-      <tr><td>Reviews in last snapshot</td><td class="num">{{ freshness.stored_review_count }}</td></tr>
-      <tr><td>Rubric fingerprint changed</td><td class="num">{{ 'yes' if freshness.rubric_changed else 'no' }}</td></tr>
-      <tr><td>Snapshot run</td><td class="num">{{ '#%d'|format(latest_run.id) if latest_run else '—' }}</td></tr>
-      <tr><td>Publication certified run</td><td class="num">{{ '#%d'|format(event.results_published_run_id) if event.results_published_run_id else '—' }}</td></tr>
-      <tr><td>Publication state</td><td class="num"><span class="status {{ 'COMPLETE' if publication_state == 'current' else ('STALE' if publication_state == 'stale' else 'UPCOMING') }}">{{ publication_state | replace('_', ' ') | upper }}</span></td></tr>
-      <tr><td>Publication recorded at</td><td class="num">{{ event.results_published_at | utc if event.results_published_at else 'not published' }}</td></tr>
-    </tbody>
-  </table></div>
+
+  <div class="table-scroll">
+    <table style="margin-top:.8rem">
+      <tbody>
+        <tr>
+          <td>Completed reviews (now)</td>
+          <td class="num">{{ freshness.current_review_count }}</td>
+        </tr>
+
+        <tr>
+          <td>Pending reviews excluded</td>
+          <td class="num">{{ freshness.current_pending_count }}</td>
+        </tr>
+
+        <tr>
+          <td>Reviews in last snapshot</td>
+          <td class="num">{{ freshness.stored_review_count }}</td>
+        </tr>
+
+        <tr>
+          <td>Rubric fingerprint changed</td>
+          <td class="num">{{ 'yes' if freshness.rubric_changed else 'no' }}</td>
+        </tr>
+
+        <tr>
+          <td>Snapshot run</td>
+          <td class="num">
+            {{ '#%d'|format(latest_run.id) if latest_run else '—' }}
+          </td>
+        </tr>
+
+        <tr>
+          <td>Publication certified run</td>
+          <td class="num">
+            {{ '#%d'|format(event.results_published_run_id) if event.results_published_run_id else '—' }}
+          </td>
+        </tr>
+
+        <tr>
+          <td>Publication state</td>
+          <td class="num">
+            <span class="status {{ 'COMPLETE' if publication_state == 'current' else ('STALE' if publication_state == 'stale' else 'UPCOMING') }}">
+              {{ publication_state | replace('_', ' ') | upper }}
+            </span>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Publication recorded at</td>
+          <td class="num">
+            {{ event.results_published_at | utc if event.results_published_at else 'not published' }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <div class="small muted" style="margin-top:.5rem">
     STALE compares the current review, submitted-project, rubric, and result-label/schedule inputs
     with the fingerprint stored in the last normalization snapshot. Timestamps are not used for this decision.
   </div>
+
 </div>
 
 <div class="grid two">
+
   <div class="card">
     <h3>Ranking (last persisted normalization; may be provisional or stale)</h3>
+
     {% if stored and stored.projects %}
-      <div class="table-scroll"><table>
-        <thead><tr><th class="num">#</th><th>Project</th><th>Track</th><th class="num">Normalized</th><th class="num">Raw mean</th><th class="num">Reviews</th></tr></thead>
-        <tbody>
-        {% for project in stored.projects %}
-          <tr>
-            <td class="num">{{ project.rank }}</td>
-            <td>{{ project.project }}<div class="small muted">{{ project.team }}</div></td>
-            <td class="small">{{ project.track }}</td>
-            <td class="num">{{ project.score }}</td>
-            <td class="num">{{ project.raw_mean }}</td>
-            <td class="num">{{ project.review_count }} / {{ project.required_reviews }}</td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table></div>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th class="num">#</th>
+              <th>Project</th>
+              <th>Track</th>
+              <th class="num">Normalized</th>
+              <th class="num">Raw mean</th>
+              <th class="num">Reviews</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for project in stored.projects %}
+              <tr>
+                <td class="num">{{ project.rank }}</td>
+
+                <td>
+                  {{ project.project }}
+                  <div class="small muted">{{ project.team }}</div>
+                </td>
+
+                <td class="small">{{ project.track }}</td>
+
+                <td class="num">{{ project.score }}</td>
+
+                <td class="num">{{ project.raw_mean }}</td>
+
+                <td class="num">
+                  {{ project.review_count }} / {{ project.required_reviews }}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
       {% if stored.unranked_projects %}
         <div class="small muted" style="margin-top:.5rem">
-          Excluded as provisional (no completed reviews): {% for p in stored.unranked_projects %}{{ p.project }}{% if not loop.last %}, {% endif %}{% endfor %}.
+          Excluded as provisional (no completed reviews):
+          {% for p in stored.unranked_projects %}
+            {{ p.project }}{% if not loop.last %}, {% endif %}
+          {% endfor %}.
         </div>
       {% endif %}
+
     {% else %}
-      <div class="empty">No stored normalization yet. Run it to produce a ranking.</div>
+
+      <div class="empty">
+        No stored normalization yet. Run it to produce a ranking.
+      </div>
+
     {% endif %}
   </div>
 
   <div class="card">
+
     <h3>Judge statistics (live preview, not stored)</h3>
+
     {% if live %}
-      <div class="table-scroll"><table>
-        <thead><tr><th>Judge</th><th class="num">Reviews</th><th class="num">Mean</th><th class="num">σ (pop.)</th><th>Notes</th></tr></thead>
-        <tbody>
-        {% for stats in live.judge_stats %}
-          <tr>
-            <td>{{ stats.judge }}</td>
-            <td class="num">{{ stats.reviews }}</td>
-            <td class="num">{{ stats.mean }}</td>
-            <td class="num">{{ stats.sigma }}</td>
-            <td class="small muted">
-              {% if stats.zero_variance %}σ = 0 → z = 0{% endif %}
-              {% if stats.insufficient_reviews %}fewer than {{ live.min_reviews_for_normalization }} reviews → neutral{% endif %}
-            </td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table></div>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Judge</th>
+              <th class="num">Reviews</th>
+              <th class="num">Mean</th>
+              <th class="num">σ (pop.)</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for stats in live.judge_stats %}
+              <tr>
+
+                <td>{{ stats.judge }}</td>
+
+                <td class="num">
+                  {{ stats.reviews }}
+                </td>
+
+                <td class="num">
+                  {{ stats.mean }}
+                </td>
+
+                <td class="num">
+                  {{ stats.sigma }}
+                </td>
+
+                <td class="small muted">
+
+                  {% if stats.zero_variance %}
+                    σ = 0 → z = 0
+                  {% endif %}
+
+                  {% if stats.insufficient_reviews %}
+                    fewer than {{ live.min_reviews_for_normalization }} reviews → neutral
+                  {% endif %}
+
+                </td>
+
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
       <div class="small muted" style="margin-top:.5rem">
-        Mode: <strong>{{ live.mode }}</strong>. {{ live.review_count }} completed reviews, {{ live.pending_review_count }} pending,
+        Mode: <strong>{{ live.mode }}</strong>.
+        {{ live.review_count }} completed reviews,
+        {{ live.pending_review_count }} pending,
         {{ live.provisional_project_count }} provisional project(s).
       </div>
+
     {% endif %}
+
     <div class="row" style="margin-top:.7rem">
-      <a class="btn secondary small" href="{{ url_for('api.normalization_state', event_id=event.id) }}">Normalization JSON</a>
-      <a class="btn secondary small" href="{{ url_for('exports.export_csv', event_id=event.id) }}">Download CSV</a>
-      <a class="btn secondary small" href="{{ url_for('api.results', event_id=event.id) }}">Results JSON</a>
+
+      <a
+        class="btn secondary small"
+        href="{{ url_for('api.normalization_state', event_id=event.id) }}"
+      >
+        Normalization JSON
+      </a>
+
+      <a
+        class="btn secondary small"
+        href="{{ url_for('exports.export_csv', event_id=event.id) }}"
+      >
+        Download CSV
+      </a>
+
+      <a
+        class="btn secondary small"
+        href="{{ url_for('api.results', event_id=event.id) }}"
+      >
+        Results JSON
+      </a>
+
     </div>
+
   </div>
+
 </div>
 
 <div class="card">
+
   <h3>Normalization history ({{ history|length }} most recent)</h3>
-  <p class="small muted">This table is the only persisted workflow history in RUNBOOK; it exists so that
-    staleness can be detected instead of guessed.</p>
-  <div class="table-scroll"><table>
-    <thead><tr><th>#</th><th>Generated</th><th class="num">Reviews</th><th class="num">Judges</th><th class="num">Projects</th>
-      <th>Method</th><th>Fingerprint</th></tr></thead>
-    <tbody>
-    {% for run in history %}
-      <tr>
-        <td>{{ run.id }}</td>
-        <td class="small">{{ run.created_at | utc }}</td>
-        <td class="num">{{ run.review_count }}</td>
-        <td class="num">{{ run.judge_count }}</td>
-        <td class="num">{{ run.project_count }}</td>
-        <td class="small">{{ run.method }}</td>
-        <td class="mono small">{{ run.fingerprint[:12] }}…</td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table></div>
+
+  <p class="small muted">
+    This table is the only persisted workflow history in RUNBOOK; it exists so that
+    staleness can be detected instead of guessed.
+  </p>
+
+  <div class="table-scroll">
+    <table>
+
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Generated</th>
+          <th class="num">Reviews</th>
+          <th class="num">Judges</th>
+          <th class="num">Projects</th>
+          <th>Method</th>
+          <th>Fingerprint</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for run in history %}
+          <tr>
+
+            <td>{{ run.id }}</td>
+
+            <td class="small">
+              {{ run.created_at | utc }}
+            </td>
+
+            <td class="num">
+              {{ run.review_count }}
+            </td>
+
+            <td class="num">
+              {{ run.judge_count }}
+            </td>
+
+            <td class="num">
+              {{ run.project_count }}
+            </td>
+
+            <td class="small">
+              {{ run.method }}
+            </td>
+
+            <td class="mono small">
+              {{ run.fingerprint[:12] }}…
+            </td>
+
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
 </div>
+
 {% endblock %}

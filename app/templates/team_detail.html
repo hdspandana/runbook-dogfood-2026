@@ -35,6 +35,7 @@
     <div class="code">{{ invite_url }}</div>
     {% if is_lead %}
       <form method="post" action="{{ url_for('teams.rotate_invite', team_id=team.id) }}" style="margin-top:.6rem">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <button class="btn secondary small" type="submit">Rotate invite link</button>
       </form>
     {% endif %}

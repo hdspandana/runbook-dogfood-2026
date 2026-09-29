@@ -31,6 +31,8 @@
     <span class="who">{{ current_user.display_name }}</span>
     <span class="pill-role">{{ viewer_role }}</span>
     <form class="inline" method="post" action="{{ url_for('auth.logout') }}">
+      <form class="inline" method="post" action="{{ url_for('auth.logout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <button class="btn secondary small" type="submit">Sign out</button>
     </form>
   {% else %}
